@@ -46,10 +46,15 @@ export const Sidebar: React.FC<SidebarProps> = ({
 
   // Check if topic is locked based on prerequisites
   const isTopicLocked = (topic: Topic) => {
+    // Lock any topic that belongs to Block 2 or Block 3 (Units 2‑4)
+    const lockedBlock = SYLLABUS.some(block =>
+      (block.id === 'block-2' || block.id === 'block-3') &&
+      block.units.some(unit => unit.topics.some(t => t.id === topic.id))
+    );
+    if (lockedBlock) return true;
+    // Existing prerequisite lock logic
     if (!topic.prerequisites || topic.prerequisites.length === 0) return false;
-    // For simplicity, a topic is locked if any prerequisite topic that exists in the syllabus is not completed
-    // Note: Prerequisites can be external (like 'Basic Probability'), we only enforce locks on internal topic IDs
-    const internalPrereqs = topic.prerequisites.filter(prereq => 
+    const internalPrereqs = topic.prerequisites.filter(prereq =>
       SYLLABUS.some(b => b.units.some(u => u.topics.some(t => t.id === prereq)))
     );
     return internalPrereqs.some(prereqId => !completedTopics.includes(prereqId));

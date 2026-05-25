@@ -43,7 +43,7 @@ export const HumanFeedback: React.FC<HumanFeedbackProps> = ({
   };
 
   return (
-    <div className="mt-8 border border-brandDark-200 dark:border-brandDark-800 rounded-2xl overflow-hidden bg-white dark:bg-brandDark-900 shadow-sm transition-all duration-300">
+    <div className="mt-8 interactive-card overflow-hidden">
       {/* Header Bar */}
       <button
         onClick={() => setIsOpen(!isOpen)}

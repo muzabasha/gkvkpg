@@ -1,9 +1,11 @@
 import React from 'react';
 import { SYLLABUS } from '../data/syllabus';
 import type { Topic } from '../data/syllabus';
-import { Sun, Moon, Monitor, CheckCircle } from 'lucide-react';
+import { Sun, Moon, Monitor, CheckCircle, Menu } from 'lucide-react';
 
 interface HeaderProps {
+  sidebarOpen: boolean;
+  onToggleSidebar: () => void;
   currentTopicId: string;
   completedTopics: string[];
   toggleCompleteTopic: (id: string) => void;
@@ -17,6 +19,8 @@ interface HeaderProps {
 }
 
 export const Header: React.FC<HeaderProps> = ({
+  sidebarOpen,
+  onToggleSidebar,
   currentTopicId,
   completedTopics,
   toggleCompleteTopic,
@@ -49,6 +53,15 @@ export const Header: React.FC<HeaderProps> = ({
 
   return (
     <header className="sticky top-0 bg-white/95 dark:bg-brandDark-900/95 backdrop-blur-md border-b border-brandDark-200 dark:border-brandDark-800 px-6 py-4 flex items-center justify-between z-10 transition-colors">
+      {/* Sidebar Toggle Button */}
+      <button
+        onClick={onToggleSidebar}
+        title={sidebarOpen ? "Collapse Sidebar" : "Expand Sidebar"}
+        className="p-2.5 mr-4 rounded-xl border border-brandDark-200 dark:border-brandDark-800 text-brandDark-600 dark:text-brandDark-300 hover:bg-brandDark-100 dark:hover:bg-brandDark-850 flex items-center justify-center transition-all cursor-pointer shadow-sm hover:scale-105 active:scale-95"
+      >
+        <Menu size={18} />
+      </button>
+
       <div className="flex-1 min-w-0 pr-4">
         {showDashboard ? (
           <div>

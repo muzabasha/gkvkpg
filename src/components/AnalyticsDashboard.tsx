@@ -87,7 +87,7 @@ export const AnalyticsDashboard: React.FC<AnalyticsDashboardProps> = ({ complete
     <div className="space-y-6 bg-brandDark-50 dark:bg-brandDark-950 p-6 rounded-2xl border border-brandDark-200 dark:border-brandDark-800 transition-colors">
       {/* Metric Cards */}
       <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-        <div className="bg-white dark:bg-brandDark-900 p-5 rounded-2xl border border-brandDark-200 dark:border-brandDark-800 shadow-sm flex items-center gap-4">
+        <div className="interactive-card p-5 flex items-center gap-4">
           <div className="p-3.5 bg-primary-100 dark:bg-primary-950/70 text-primary-600 dark:text-primary-400 rounded-xl">
             <Percent size={24} />
           </div>
@@ -101,7 +101,7 @@ export const AnalyticsDashboard: React.FC<AnalyticsDashboardProps> = ({ complete
           </div>
         </div>
 
-        <div className="bg-white dark:bg-brandDark-900 p-5 rounded-2xl border border-brandDark-200 dark:border-brandDark-800 shadow-sm flex items-center gap-4">
+        <div className="interactive-card p-5 flex items-center gap-4">
           <div className="p-3.5 bg-emerald-100 dark:bg-emerald-950/50 text-emerald-600 dark:text-emerald-400 rounded-xl">
             <CheckCircle size={24} />
           </div>
@@ -115,7 +115,7 @@ export const AnalyticsDashboard: React.FC<AnalyticsDashboardProps> = ({ complete
           </div>
         </div>
 
-        <div className="bg-white dark:bg-brandDark-900 p-5 rounded-2xl border border-brandDark-200 dark:border-brandDark-800 shadow-sm flex items-center gap-4">
+        <div className="interactive-card p-5 flex items-center gap-4">
           <div className="p-3.5 bg-amber-100 dark:bg-amber-950/50 text-amber-600 dark:text-amber-400 rounded-xl">
             <Users size={24} />
           </div>
@@ -129,7 +129,7 @@ export const AnalyticsDashboard: React.FC<AnalyticsDashboardProps> = ({ complete
           </div>
         </div>
 
-        <div className="bg-white dark:bg-brandDark-900 p-5 rounded-2xl border border-brandDark-200 dark:border-brandDark-800 shadow-sm flex items-center gap-4">
+        <div className="interactive-card p-5 flex items-center gap-4">
           <div className="p-3.5 bg-violet-100 dark:bg-violet-950/50 text-violet-600 dark:text-violet-400 rounded-xl">
             <TrendingUp size={24} />
           </div>
@@ -147,8 +147,8 @@ export const AnalyticsDashboard: React.FC<AnalyticsDashboardProps> = ({ complete
       {/* Visual Analytics */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Block-wise coverage bar chart */}
-        <div className="bg-white dark:bg-brandDark-900 p-6 rounded-2xl border border-brandDark-200 dark:border-brandDark-800 shadow-sm">
-          <h3 className="text-lg font-bold text-brandDark-800 dark:text-brandDark-200 mb-4">
+        <div className="interactive-card p-6">
+          <h3 className="text-lg font-bold text-brandDark-800 dark:text-brandDark-250 mb-4 mt-0">
             Block-wise Topic Progress
           </h3>
           <div className="h-72 w-full text-xs">
@@ -169,7 +169,7 @@ export const AnalyticsDashboard: React.FC<AnalyticsDashboardProps> = ({ complete
                   }}
                 />
                 <Legend />
-                <Bar dataKey="Completed" fill="#3b82f6" radius={[4, 4, 0, 0]} />
+                <Bar dataKey="Completed" fill="#3b66ff" radius={[4, 4, 0, 0]} />
                 <Bar dataKey="Total" fill="#e2e8f0" className="dark:fill-brandDark-800" radius={[4, 4, 0, 0]} />
               </BarChart>
             </ResponsiveContainer>
@@ -177,8 +177,8 @@ export const AnalyticsDashboard: React.FC<AnalyticsDashboardProps> = ({ complete
         </div>
 
         {/* CO Mapped radar chart */}
-        <div className="bg-white dark:bg-brandDark-900 p-6 rounded-2xl border border-brandDark-200 dark:border-brandDark-800 shadow-sm">
-          <h3 className="text-lg font-bold text-brandDark-800 dark:text-brandDark-200 mb-4">
+        <div className="interactive-card p-6">
+          <h3 className="text-lg font-bold text-brandDark-800 dark:text-brandDark-250 mb-4 mt-0">
             Course Outcome (CO) Mastery Profile
           </h3>
           <div className="h-72 w-full text-xs">
@@ -216,8 +216,8 @@ export const AnalyticsDashboard: React.FC<AnalyticsDashboardProps> = ({ complete
       </div>
 
       {/* Course Outcomes Details List */}
-      <div className="bg-white dark:bg-brandDark-900 p-6 rounded-2xl border border-brandDark-200 dark:border-brandDark-800 shadow-sm">
-        <h3 className="text-lg font-bold text-brandDark-800 dark:text-brandDark-200 mb-4">
+      <div className="interactive-card p-6">
+        <h3 className="text-lg font-bold text-brandDark-800 dark:text-brandDark-250 mb-4 mt-0">
           Detailed Course Outcomes Mappings
         </h3>
         <div className="space-y-4">

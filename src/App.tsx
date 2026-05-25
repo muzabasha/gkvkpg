@@ -37,6 +37,7 @@ export const App: React.FC = () => {
   const [viewMode, setViewMode] = useState<'home' | 'topic' | 'analytics' | 'graph'>('home');
   const [homeTab, setHomeTab] = useState<'syllabus' | 'resource-person'>('syllabus');
   const [iframeKey, setIframeKey] = useState(0);
+  const [sidebarOpen, setSidebarOpen] = useState<boolean>(true);
 
   // Handle switching topic from sidebar
   const handleSelectTopic = (topicId: string) => {
@@ -79,6 +80,7 @@ export const App: React.FC = () => {
       
       {/* Sidebar Navigation */}
       <Sidebar
+        isOpen={sidebarOpen}
         currentTopicId={state.currentTopicId}
         completedTopics={state.completedTopics}
         setTopic={handleSelectTopic}
@@ -89,10 +91,12 @@ export const App: React.FC = () => {
       />
 
       {/* Main Container */}
-      <div className="flex-1 flex flex-col h-full overflow-hidden">
+      <div className="flex-1 flex flex-col h-full overflow-hidden transition-all duration-300">
         
         {/* Header bar controls */}
         <Header
+          sidebarOpen={sidebarOpen}
+          onToggleSidebar={() => setSidebarOpen(prev => !prev)}
           currentTopicId={state.currentTopicId}
           completedTopics={state.completedTopics}
           toggleCompleteTopic={toggleCompleteTopic}

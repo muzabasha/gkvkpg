@@ -114,7 +114,7 @@ export const TopicDependency: React.FC<TopicDependencyProps> = ({
   });
 
   return (
-    <div className="w-full bg-brandDark-50 dark:bg-brandDark-950 p-6 rounded-2xl border border-brandDark-200 dark:border-brandDark-800 transition-colors">
+    <div className="w-full interactive-card p-6">
       <div className="mb-6 flex flex-wrap gap-4 items-center justify-between">
         <div>
           <h3 className="text-xl font-bold text-brandDark-900 dark:text-white m-0">
@@ -148,7 +148,7 @@ export const TopicDependency: React.FC<TopicDependencyProps> = ({
         </div>
       </div>
 
-      <div ref={containerRef} className="w-full overflow-x-auto bg-white dark:bg-brandDark-900 rounded-xl border border-brandDark-200 dark:border-brandDark-800/80 shadow-inner">
+      <div ref={containerRef} className="w-full overflow-x-auto bg-white dark:bg-brandDark-950/40 backdrop-blur-sm rounded-xl border border-brandDark-200 dark:border-brandDark-850 shadow-inner">
         <svg
           width={dimensions.width}
           height={dimensions.height}

@@ -4,6 +4,7 @@ import type { Topic } from '../data/syllabus';
 import { BookOpen, Search, CheckCircle, Circle, Lock, Award, Users, BarChart } from 'lucide-react';
 
 interface SidebarProps {
+  isOpen: boolean;
   currentTopicId: string;
   completedTopics: string[];
   setTopic: (id: string) => void;
@@ -14,6 +15,7 @@ interface SidebarProps {
 }
 
 export const Sidebar: React.FC<SidebarProps> = ({
+  isOpen,
   currentTopicId,
   completedTopics,
   setTopic,
@@ -68,7 +70,11 @@ export const Sidebar: React.FC<SidebarProps> = ({
   );
 
   return (
-    <aside className="w-80 h-screen sticky top-0 bg-white dark:bg-brandDark-900 border-r border-brandDark-200 dark:border-brandDark-800 flex flex-col z-20 transition-all select-none">
+    <aside
+      className={`h-screen sticky top-0 bg-white dark:bg-brandDark-900 border-r border-brandDark-200 dark:border-brandDark-800 flex flex-col z-20 transition-all duration-300 ease-in-out select-none ${
+        isOpen ? 'w-80 opacity-100 translate-x-0' : 'w-0 opacity-0 -translate-x-full overflow-hidden border-r-0'
+      }`}
+    >
       {/* Brand Header */}
       <div className="p-5 border-b border-brandDark-200 dark:border-brandDark-800">
         <div className="flex items-center gap-3 mb-2">

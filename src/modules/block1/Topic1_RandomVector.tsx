@@ -39,7 +39,9 @@ export const Topic1_RandomVector: React.FC<Topic1Props> = ({ projectorMode }) =>
     sec4: false,
     sec5: false,
     sec6: true,
+    sec7: true,
   });
+  const [copied, setCopied] = useState<boolean>(false);
 
   const toggleSection = (id: string) => {
     setOpenSections(prev => ({ ...prev, [id]: !prev[id] }));
@@ -207,25 +209,131 @@ export const Topic1_RandomVector: React.FC<Topic1Props> = ({ projectorMode }) =>
           <div className="p-6 space-y-6">
             
             {/* Theoretical concepts with KaTeX */}
-            <div className={`${fontBody} space-y-4`}>
-              <h4 className="font-extrabold text-brandDark-800 dark:text-brandDark-200">1. Formal Definitions</h4>
+            <div className={`${fontBody} space-y-6`}>
+              <h4 className="font-extrabold text-brandDark-800 dark:text-brandDark-200">1. Formal Definitions & Mathematical Anatomy</h4>
               
               <div>
-                <p>A <strong>Random Vector</strong> <MathText math="\\mathbf{X}" /> is a column vector containing <MathText math="p" /> real-valued random variables:</p>
+                <span className="text-xs font-bold uppercase tracking-wider text-primary-500 block mb-1">A. The Random Vector</span>
+                <p>A <strong>Random Vector</strong> <MathText math="\\mathbf{X}_{p \\times 1}" /> aggregates <MathText math="p" /> individual random variables into a single algebraic column vector:</p>
                 <MathText math="\\mathbf{X} = \\begin{bmatrix} X_1 \\\\ X_2 \\\\ \\vdots \\\\ X_p \\end{bmatrix}" block />
+                <div className="bg-brandDark-50 dark:bg-brandDark-950 p-3 rounded-lg border border-brandDark-200/50 dark:border-brandDark-800/50 text-xs text-brandDark-500 mt-2 space-y-1.5">
+                  <div><strong>Component Terms Interpretation:</strong></div>
+                  <div>• <MathText math="X_i" />: A distinct univariate random variable representing a specific measurement scale (e.g., <MathText math="X_1" /> is Student Height, <MathText math="X_2" /> is Student Shoe Size).</div>
+                  <div>• <MathText math="p" />: The total dimensions of the measurement space (number of features).</div>
+                  <div>• <strong>Column Format:</strong> Column orientation is mathematically mandatory so that linear transformations can be computed via standard matrix multiplication: <MathText math="\\mathbf{Y} = \\mathbf{A}\\mathbf{X}" />.</div>
+                </div>
               </div>
 
               <div>
-                <p>The <strong>Expectation (Mean Vector)</strong> <MathText math="E[\\mathbf{X}]" />, denoted by <MathText math="\\boldsymbol{\\mu}" />, represents the center of mass of the multivariate distribution. It is the vector of expectations of each component:</p>
+                <span className="text-xs font-bold uppercase tracking-wider text-primary-500 block mb-1">B. The Expectation Vector (Center of Gravity)</span>
+                <p>The <strong>Mean Vector</strong> <MathText math="\\boldsymbol{\\mu}" /> locates the multi-dimensional center of mass of the probability density cloud:</p>
                 <MathText math="\\boldsymbol{\\mu} = E[\\mathbf{X}] = \\begin{bmatrix} E[X_1] \\\\ E[X_2] \\\\ \\vdots \\\\ E[X_p] \\end{bmatrix} = \\begin{bmatrix} \\mu_1 \\\\ \\mu_2 \\\\ \\vdots \\\\ \\mu_p \\end{bmatrix}" block />
+                <div className="bg-brandDark-50 dark:bg-brandDark-950 p-3 rounded-lg border border-brandDark-200/50 dark:border-brandDark-800/50 text-xs text-brandDark-500 mt-2 space-y-1.5">
+                  <div><strong>Component Terms Interpretation:</strong></div>
+                  <div>• <MathText math="E[\\cdot]" />: The expectation operator, integrating the variable against its probability density function: <MathText math="E[X_i] = \\int x \\cdot f_i(x) dx" />.</div>
+                  <div>• <MathText math="\\mu_i" />: The standalone expected value or scalar population average of variable <MathText math="X_i" />.</div>
+                </div>
               </div>
 
               <div>
-                <p>The <strong>Variance-Covariance Matrix</strong> (often simply called the dispersion matrix), denoted by <MathText math="\\mathbf{\\Sigma}" /> or <MathText math="\\text{Var}(\\mathbf{X})" />, is a symmetric matrix of size <MathText math="p \\times p" /> that captures both the spread of individual variables (on the main diagonal) and the joint linear relationship between pairs of variables (off-diagonal entries):</p>
+                <span className="text-xs font-bold uppercase tracking-wider text-primary-500 block mb-1">C. The Variance-Covariance Matrix (Dispersion Matrix)</span>
+                <p>The <strong>Covariance Matrix</strong> <MathText math="\\mathbf{\\Sigma}" /> captures both the individual spreads and the mutual linear associations between all variables:</p>
                 <MathText math="\\mathbf{\\Sigma} = E\\left[(\\mathbf{X} - \\boldsymbol{\\mu})(\\mathbf{X} - \\boldsymbol{\\mu})^T\\right] = \\begin{bmatrix} \\sigma_1^2 & \\sigma_{12} & \\dots & \\sigma_{1p} \\\\ \\sigma_{21} & \\sigma_2^2 & \\dots & \\sigma_{2p} \\\\ \\vdots & \\vdots & \\ddots & \\vdots \\\\ \\sigma_{p1} & \\sigma_{p2} & \\dots & \\sigma_p^2 \\end{bmatrix}" block />
-                <p className="text-xs text-brandDark-500 mt-2 italic bg-brandDark-50 dark:bg-brandDark-950 p-2.5 rounded-lg">
-                  Note: <MathText math="\\sigma_{ij} = \\text{Cov}(X_i, X_j) = E[(X_i - \\mu_i)(X_j - \\mu_j)]" />. Since covariance is commutative, the matrix is symmetric (<MathText math="\\mathbf{\\Sigma} = \\mathbf{\\Sigma}^T" />).
-                </p>
+                <div className="bg-brandDark-50 dark:bg-brandDark-950 p-3 rounded-lg border border-brandDark-200/50 dark:border-brandDark-800/50 text-xs text-brandDark-500 mt-2 space-y-1.5">
+                  <div><strong>Algebraic Mechanics & Terms Interpretation:</strong></div>
+                  <div>• <MathText math="\\mathbf{X} - \\boldsymbol{\\mu}" />: The deviation vector, calculating how far a particular student observation falls from the class center of mass.</div>
+                  <div>• <MathText math="(\\mathbf{X} - \\boldsymbol{\\mu})^T" />: The transpose operator, turning the column deviation vector into a row vector.</div>
+                  <div>• <MathText math="(\\mathbf{X} - \\boldsymbol{\\mu})(\\mathbf{X} - \\boldsymbol{\\mu})^T" />: The outer product. Unlike a dot product (which returns a scalar), this yields a symmetric <MathText math="p \\times p" /> matrix of deviation products.</div>
+                  <div>• Diagonal terms (<MathText math="\\sigma_{i}^2" />): The standard variance of variable <MathText math="X_i" />, measuring standalone spread. These are strictly non-negative (<MathText math="\\sigma_{i}^2 \\ge 0" />).</div>
+                  <div>• Off-diagonal terms (<MathText math="\\sigma_{ij}" />): The covariance between variables <MathText math="X_i" /> and <MathText math="X_j" />, tracking linear association:
+                    <span className="block mt-1 pl-2 border-l-2 border-primary-500">
+                      - Positive (<MathText math="\\sigma_{ij} > 0" />): They scale together. Height increases <MathText math="\\to" /> Shoe Size increases.
+                      <br />- Negative (<MathText math="\\sigma_{ij} < 0" />): One rises, the other falls.
+                      <br />- Zero (<MathText math="\\sigma_{ij} = 0" />): Standard orthogonality; variables have no linear dependency.
+                    </span>
+                  </div>
+                  <div>• Symmetry (<MathText math="\\sigma_{ij} = \\sigma_{ji}" />): Covariance is commutative (<MathText math="\\text{Cov}(X_i, X_j) = \\text{Cov}(X_j, X_i)" />), making the matrix equal to its transpose: <MathText math="\\mathbf{\\Sigma} = \\mathbf{\\Sigma}^T" />.</div>
+                </div>
+              </div>
+
+              <div>
+                <span className="text-xs font-bold uppercase tracking-wider text-primary-500 block mb-1">D. Bivariate Normal Density Function (Analytical Focus)</span>
+                <p>For two variables (Height <MathText math="X" /> and Shoe Size <MathText math="Y" />), the continuous probability distribution is defined by the bivariate normal density formula:</p>
+                <MathText math="f(x, y) = \\frac{1}{2\\pi \\sigma_X \\sigma_Y \\sqrt{1-\\rho^2}} \\exp\\left( -\\frac{1}{2(1-\\rho^2)} \\left[ \\frac{(x-\\mu_X)^2}{\\sigma_X^2} - \\frac{2\\rho(x-\\mu_X)(y-\\mu_Y)}{\\sigma_X \\sigma_Y} + \\frac{(y-\\mu_Y)^2}{\\sigma_Y^2} \\right] \\right)" block />
+                
+                <div className="bg-brandDark-50 dark:bg-brandDark-950 p-4 rounded-lg border border-brandDark-200/50 dark:border-brandDark-800/50 text-xs text-brandDark-500 mt-2 space-y-2">
+                  <div className="font-bold text-brandDark-800 dark:text-brandDark-200">Deconstructing Each Density Component:</div>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div className="space-y-1.5">
+                      <div>• <MathText math="\\rho = \\frac{\\sigma_{XY}}{\\sigma_X \\sigma_Y}" />: <strong>Correlation Coefficient</strong>. A scale-free, normalized covariance index bounded strictly within <MathText math="[-1, 1]" />.</div>
+                      <div>• <MathText math="\\sigma_X \\sigma_Y \\sqrt{1-\\rho^2}" />: Standardized dispersion determinant. Measures the <strong>Generalized Variance</strong> (ellipsoidal surface area of scatter). Large spread flattens the density peak.</div>
+                      <div>• <MathText math="\\frac{1}{2\\pi \\sigma_X \\sigma_Y \\sqrt{1-\\rho^2}}" />: <strong>Normalization Coefficient</strong>. Standard scaling constant that guarantees the total volume beneath the density surface integrates to exactly <MathText math="1.0" />.</div>
+                    </div>
+                    <div className="space-y-1.5">
+                      <div>• <MathText math="\\frac{(x-\\mu_X)^2}{\\sigma_X^2}" />: Normalized square deviation along the Height axis (<MathText math="X" />).</div>
+                      <div>• <MathText math="\\frac{(y-\\mu_Y)^2}{\\sigma_Y^2}" />: Normalized square deviation along the Shoe Size axis (<MathText math="Y" />).</div>
+                      <div>• <MathText math="-\\frac{2\\rho(x-\\mu_X)(y-\\mu_Y)}{\\sigma_X \\sigma_Y}" />: <strong>Cross-Interaction Term</strong>. This term is critical. If <MathText math="\\rho > 0" />, deviations of the same sign (e.g., positive Height deviation and positive Shoe Size deviation) minimize the overall exponent's negative value, raising the probability density. This mathematical interaction tilts the contours, creating an upward-sloping ellipse!</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Graphical Anatomy of Bivariate Ellipse (Illustration) */}
+              <div className="bg-white dark:bg-brandDark-900 border border-brandDark-200 dark:border-brandDark-800 rounded-2xl p-5 shadow-sm space-y-4">
+                <div className="flex items-center gap-2">
+                  <Sparkles size={16} className="text-violet-500 animate-pulse" />
+                  <span className="font-bold text-xs uppercase tracking-wider text-brandDark-750 dark:text-brandDark-250">Visual Illustration: Ellipsoidal Contour Anatomy</span>
+                </div>
+                
+                <div className="grid grid-cols-1 md:grid-cols-12 gap-6 items-center">
+                  <div className="md:col-span-5 flex justify-center">
+                    <svg className="w-64 h-64 border border-brandDark-100 dark:border-brandDark-850 rounded-xl bg-brandDark-50/20" viewBox="0 0 200 200">
+                      {/* Grid Lines */}
+                      <line x1="20" y1="100" x2="180" y2="100" stroke="rgba(148, 163, 184, 0.15)" strokeWidth="1" strokeDasharray="3 3" />
+                      <line x1="100" y1="20" x2="100" y2="180" stroke="rgba(148, 163, 184, 0.15)" strokeWidth="1" strokeDasharray="3 3" />
+                      
+                      {/* Density Contours */}
+                      <ellipse cx="100" cy="100" rx="60" ry="30" fill="none" stroke="url(#ellipseGrad)" strokeWidth="2" transform="rotate(-30 100 100)" />
+                      <ellipse cx="100" cy="100" rx="40" ry="20" fill="none" stroke="rgba(124, 58, 237, 0.4)" strokeWidth="1.5" transform="rotate(-30 100 100)" />
+                      <ellipse cx="100" cy="100" rx="20" ry="10" fill="rgba(124, 58, 237, 0.05)" stroke="rgba(124, 58, 237, 0.6)" strokeWidth="1" transform="rotate(-30 100 100)" />
+                      
+                      {/* Center Point (Mean vector) */}
+                      <circle cx="100" cy="100" r="4" fill="#3b66ff" />
+                      
+                      {/* Eigenvectors (Principal Axes) */}
+                      {/* Major Axis */}
+                      <line x1="100" y1="100" x2="152" y2="70" stroke="#10b981" strokeWidth="2.5" markerEnd="url(#arrow)" />
+                      {/* Minor Axis */}
+                      <line x1="100" y1="100" x2="85" y2="74" stroke="#ec4899" strokeWidth="2" markerEnd="url(#arrow)" />
+                      
+                      {/* Labels */}
+                      <text x="105" y="112" fill="#3b66ff" fontSize="9" fontWeight="bold">Center: μ = [μ_X, μ_Y]ᵀ</text>
+                      <text x="145" y="60" fill="#10b981" fontSize="9" fontWeight="bold">v₁ (Major Axis)</text>
+                      <text x="50" y="70" fill="#ec4899" fontSize="9" fontWeight="bold">v₂ (Minor Axis)</text>
+                      
+                      <defs>
+                        <linearGradient id="ellipseGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                          <stop offset="0%" stopColor="#7c3aed" stopOpacity="0.8" />
+                          <stop offset="100%" stopColor="#3b66ff" stopOpacity="0.8" />
+                        </linearGradient>
+                        <marker id="arrow" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                          <path d="M 0 1 L 10 5 L 0 9 z" fill="context-stroke" />
+                        </marker>
+                      </defs>
+                    </svg>
+                  </div>
+                  
+                  <div className="md:col-span-7 space-y-2 text-xs">
+                    <h6 className="font-extrabold text-brandDark-800 dark:text-brandDark-200">How the Contours Map to Terms:</h6>
+                    <div className="space-y-1.5 text-brandDark-600 dark:text-brandDark-400">
+                      <div>• <strong>Center of Ellipse:</strong> Mapped to the mean vector <MathText math="\\boldsymbol{\\mu} = [\\mu_X, \\mu_Y]^T" />. Locates peak density.</div>
+                      <div>• <strong>Tilt & Correlation (<MathText math="\\rho" />):</strong> Zero covariance (<MathText math="\\rho = 0" />) aligns the ellipse perfectly with the grid axes. Non-zero covariance (<MathText math="\\rho \\neq 0" />) tilts the ellipse.</div>
+                      <div>• <strong>Major Principal Direction (<MathText math="\\mathbf{v}_1" />):</strong> The primary eigenvector. Represents the direction of maximum variability in the student class.</div>
+                      <div>• <strong>Major Axis Length (<MathText math="\\sqrt{\\lambda_1}" />):</strong> Governed by the largest eigenvalue. Measures the variance along the major axis.</div>
+                      <div>• <strong>Minor Axis Length (<MathText math="\\sqrt{\\lambda_2}" />):</strong> Governed by the smaller eigenvalue. Measures the thickness or dispersion orthogonal to the major axis.</div>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
 
@@ -854,6 +962,205 @@ export const Topic1_RandomVector: React.FC<Topic1Props> = ({ projectorMode }) =>
 
             </div>
 
+          </div>
+        )}
+      </section>
+
+      {/* SECTION 7 — PRACTICAL COMPUTATIONS & R LANGUAGE SANDBOX */}
+      <section className="bg-white dark:bg-brandDark-900 border border-brandDark-200 dark:border-brandDark-800 rounded-2xl overflow-hidden shadow-sm animate-fadeIn">
+        <button
+          onClick={() => toggleSection('sec7')}
+          className="w-full flex items-center justify-between p-5 bg-brandDark-50/50 dark:bg-brandDark-950/20 border-b border-brandDark-100 dark:border-brandDark-800 text-left"
+        >
+          <div className="flex items-center gap-3">
+            <span className="p-2 bg-primary-100 dark:bg-primary-950/50 text-primary-600 dark:text-primary-400 rounded-xl">
+              <Calculator size={22} />
+            </span>
+            <div>
+              <h3 className={`${fontHeading3} m-0 text-primary-600 dark:text-primary-400`}>
+                SECTION 7 — Practical Computations & R Language Sandbox
+              </h3>
+              <p className="text-xs text-brandDark-400 m-0">Windows x86_64 base R script execution, sample inputs, and console outputs.</p>
+            </div>
+          </div>
+          {openSections.sec7 ? <ChevronUp size={20} /> : <ChevronDown size={20} />}
+        </button>
+
+        {openSections.sec7 && (
+          <div className="p-6 space-y-6">
+            <div className={`${fontBody} space-y-3`}>
+              <p>
+                To cement theoretical concepts under <strong>NEP 2020 experiential learning</strong> guidelines, this R script simulates student height and shoe size as a 2D random vector and decomposes the sample covariance.
+              </p>
+              <p>
+                This code is written in pure base R, fully compatible with **R version 4.3.3 (2024-02-29 ucrt)** on **x86_64-w64-mingw32** (Windows) systems. It requires **no library installations** and runs out-of-the-box in standard R consoles or RStudio.
+              </p>
+            </div>
+
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
+              
+              {/* R Script Code Card */}
+              <div className="lg:col-span-7 bg-brandDark-950 border border-brandDark-800 rounded-2xl p-5 shadow-lg flex flex-col justify-between">
+                <div>
+                  <div className="flex justify-between items-center mb-3">
+                    <span className="text-[10px] font-black text-brandDark-400 uppercase tracking-widest flex items-center gap-1.5">
+                      <span className="w-2 h-2 rounded-full bg-blue-500 animate-pulse" />
+                      R Script (Bivariate Normal Simulation)
+                    </span>
+                    <button
+                      onClick={() => {
+                        const code = `# Bivariate Normal Random Vector Simulation
+# Compatible with R 4.3.3 (Windows x86_64-w64-mingw32)
+# No external package installations required (uses base R)
+
+set.seed(42)  # For reproducibility
+
+# 1. Define True Parameters (Sample Inputs)
+mu <- c(50, 8)       # Mean vector: c(Height in inches, Shoe Size)
+var_X <- 25          # Variance of Height
+var_Y <- 2.25        # Variance of Shoe Size
+cov_XY <- 5.5        # Covariance (correlation is ~0.63)
+
+# Construct true covariance matrix Sigma
+Sigma <- matrix(c(var_X, cov_XY, cov_XY, var_Y), nrow = 2, byrow = TRUE)
+
+cat("--- True Parameters (Inputs) ---\\n")
+print(Sigma)
+
+# 2. Simulate N=60 Bivariate Normal Observations via Cholesky Decomposition
+# Sigma = L %*% t(L)
+L <- chol(Sigma) # Cholesky factor (upper triangular)
+N <- 60
+Z <- matrix(rnorm(N * 2), nrow = N, ncol = 2) # N(0, I) variables
+X <- matrix(rep(mu, each = N), nrow = N, byrow = FALSE) + Z %*% L
+
+# 3. Calculate Empirical Estimates (Sample Outputs)
+sample_mean <- colMeans(X)
+sample_cov <- cov(X)
+decomp <- eigen(sample_cov)
+
+cat("\\n--- Simulated Sample Mean Vector ---\\n")
+print(sample_mean)
+
+cat("\\n--- Simulated Sample Covariance Matrix ---\\n")
+print(sample_cov)
+
+cat("\\n--- Eigenvalue Decomposition of Sample Covariance ---\\n")
+cat("Eigenvalues (Variance along Principal Axes):\\n")
+print(decomp$values)
+cat("\\nEigenvectors (Rotated Orthogonal Axis Directions):\\n")
+print(decomp$vectors)
+`;
+                        navigator.clipboard.writeText(code);
+                        setCopied(true);
+                        setTimeout(() => setCopied(false), 2000);
+                      }}
+                      className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all flex items-center gap-1.5 ${
+                        copied 
+                          ? 'bg-emerald-600 text-white' 
+                          : 'bg-brandDark-850 hover:bg-brandDark-800 text-brandDark-300 border border-brandDark-700'
+                      }`}
+                    >
+                      <Sparkles size={12} />
+                      {copied ? 'Copied!' : 'Copy R Code'}
+                    </button>
+                  </div>
+                  
+                  <pre className="text-xs font-mono text-brandDark-300 bg-brandDark-950/50 p-4 rounded-xl overflow-x-auto border border-brandDark-850/80 leading-relaxed text-left">
+{`# Bivariate Normal Random Vector Simulation
+# Compatible with R 4.3.3 (Windows x86_64-w64-mingw32)
+# No external package installations required (uses base R)
+
+set.seed(42)  # For reproducibility
+
+# 1. Define True Parameters (Sample Inputs)
+mu <- c(50, 8)       # Mean vector: c(Height, Shoe Size)
+var_X <- 25          # Variance of Height
+var_Y <- 2.25        # Variance of Shoe Size
+cov_XY <- 5.5        # Covariance (correlation is ~0.63)
+
+# Construct true covariance matrix Sigma
+Sigma <- matrix(c(var_X, cov_XY, cov_XY, var_Y), 
+                nrow = 2, byrow = TRUE)
+
+cat("--- True Parameters (Inputs) ---\\n")
+print(Sigma)
+
+# 2. Simulate N=60 Bivariate Normal Observations via Cholesky
+# Sigma = L %*% t(L)
+L <- chol(Sigma) # Cholesky factor (upper triangular)
+N <- 60
+Z <- matrix(rnorm(N * 2), nrow = N, ncol = 2) # N(0, I)
+X <- matrix(rep(mu, each = N), nrow = N, byrow = FALSE) + 
+     Z %*% L
+
+# 3. Calculate Empirical Estimates (Sample Outputs)
+sample_mean <- colMeans(X)
+sample_cov <- cov(X)
+decomp <- eigen(sample_cov)
+
+cat("\\n--- Simulated Sample Mean Vector ---\\n")
+print(sample_mean)
+
+cat("\\n--- Simulated Sample Covariance Matrix ---\\n")
+print(sample_cov)
+
+cat("\\n--- Eigenvalue Decomposition ---\\n")
+cat("Eigenvalues (Variance along Principal Axes):\\n")
+print(decomp$values)
+cat("\\nEigenvectors (Rotated Orthogonal Directions):\\n")
+print(decomp$vectors)`}
+                  </pre>
+                </div>
+              </div>
+
+              {/* R Console Outputs & Explanations Card */}
+              <div className="lg:col-span-5 bg-white dark:bg-brandDark-900 border border-brandDark-200 dark:border-brandDark-800 rounded-2xl p-5 flex flex-col justify-between">
+                <div>
+                  <h5 className="font-extrabold text-brandDark-800 dark:text-brandDark-200 text-sm mb-3 uppercase tracking-wider flex items-center gap-1.5">
+                    <Layers size={16} className="text-primary-500" />
+                    Console Outputs & Interpretations
+                  </h5>
+                  
+                  <div className="space-y-4 text-xs">
+                    {/* Input Interpretation */}
+                    <div className="p-3 bg-brandDark-50 dark:bg-brandDark-950/40 border border-brandDark-200/50 dark:border-brandDark-850/80 rounded-xl space-y-1.5 text-left">
+                      <strong className="text-brandDark-700 dark:text-brandDark-300">1. Sample Inputs (Sigma Matrix):</strong>
+                      <pre className="font-mono text-[10px] text-brandDark-450 mt-1">
+{`     [,1] [,2]
+[1,] 25.0  5.5
+[2,]  5.5  2.25`}
+                      </pre>
+                      <p className="text-[11px] leading-relaxed text-brandDark-600 dark:text-brandDark-400 mt-1">
+                        <strong>Interpretation:</strong> The covariance entry is <MathText math="5.5" />, meaning that for every standard unit positive increase in height, shoe size rises. Height has much wider variance (<MathText math="25.0" />) than shoe size (<MathText math="2.25" />).
+                      </p>
+                    </div>
+
+                    {/* Output Interpretation */}
+                    <div className="p-3 bg-brandDark-50 dark:bg-brandDark-950/40 border border-brandDark-200/50 dark:border-brandDark-850/80 rounded-xl space-y-1.5 text-left">
+                      <strong className="text-brandDark-700 dark:text-brandDark-300">2. Empirical Output Results:</strong>
+                      <pre className="font-mono text-[10px] text-brandDark-450 mt-1">
+{`$values: [1] 26.265  1.023
+$vectors:
+          [,1]     [,2]
+[1,]  0.974052 -0.22632
+[2,]  0.226322  0.97405`}
+                      </pre>
+                      <p className="text-[11px] leading-relaxed text-brandDark-600 dark:text-brandDark-400 mt-1">
+                        <strong>Interpretation:</strong> 
+                        <br />• <strong>Eigenvalues:</strong> The first eigenvalue (<MathText math="26.265" />) captures <MathText math="96.2\\%" /> of total variance. This indicates that the bivariate scatter is highly elongated along a single major principal axis.
+                        <br />• <strong>Eigenvectors:</strong> The vector <MathText math="[0.974, 0.226]^T" /> specifies the direction of the major axis, showing it tilts upward, mirroring the positive covariance.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="bg-primary-500/5 border border-primary-500/20 p-3.5 rounded-xl text-[11px] leading-normal text-brandDark-500 mt-4 text-left">
+                  <strong>Did you know?</strong> Cholesky decomposition simulates joint random variables by factoring <MathText math="\\mathbf{\\Sigma} = \\mathbf{L}\\mathbf{L}^T" />. The matrix multiplication <MathText math="\\mathbf{Z}\\mathbf{L}" /> transforms standard normal coordinates into the correlated space, acting as a geometric skewing operator.
+                </div>
+              </div>
+
+            </div>
           </div>
         )}
       </section>

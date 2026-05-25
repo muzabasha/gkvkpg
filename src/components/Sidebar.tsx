@@ -46,13 +46,21 @@ export const Sidebar: React.FC<SidebarProps> = ({
 
   // Check if topic is locked based on prerequisites
   const isTopicLocked = (topic: Topic) => {
+    // Unit 1 (block-1) topics are always unlocked
+    const isUnit1 = SYLLABUS.some(block =>
+      block.id === 'block-1' &&
+      block.units.some(unit => unit.topics.some(t => t.id === topic.id))
+    );
+    if (isUnit1) return false;
+
     // Lock any topic that belongs to Block 2 or Block 3 (Units 2‑4)
     const lockedBlock = SYLLABUS.some(block =>
       (block.id === 'block-2' || block.id === 'block-3') &&
       block.units.some(unit => unit.topics.some(t => t.id === topic.id))
     );
     if (lockedBlock) return true;
-    // Existing prerequisite lock logic
+
+    // Existing prerequisite lock logic for other blocks
     if (!topic.prerequisites || topic.prerequisites.length === 0) return false;
     const internalPrereqs = topic.prerequisites.filter(prereq =>
       SYLLABUS.some(b => b.units.some(u => u.topics.some(t => t.id === prereq)))
@@ -76,9 +84,8 @@ export const Sidebar: React.FC<SidebarProps> = ({
 
   return (
     <aside
-      className={`h-screen sticky top-0 bg-white dark:bg-brandDark-900 border-r border-brandDark-200 dark:border-brandDark-800 flex flex-col z-20 transition-all duration-300 ease-in-out select-none ${
-        isOpen ? 'w-80 opacity-100 translate-x-0' : 'w-0 opacity-0 -translate-x-full overflow-hidden border-r-0'
-      }`}
+      className={`h-screen sticky top-0 bg-white dark:bg-brandDark-900 border-r border-brandDark-200 dark:border-brandDark-800 flex flex-col z-20 transition-all duration-300 ease-in-out select-none ${isOpen ? 'w-80 opacity-100 translate-x-0' : 'w-0 opacity-0 -translate-x-full overflow-hidden border-r-0'
+        }`}
     >
       {/* Brand Header */}
       <div className="p-5 border-b border-brandDark-200 dark:border-brandDark-800">
@@ -95,7 +102,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
             </span>
           </div>
         </div>
-        
+
         {/* Classroom Badge */}
         <div className="flex items-center gap-2 mt-3 px-3 py-1.5 bg-brandDark-50 dark:bg-brandDark-950/50 rounded-lg text-sm font-medium text-brandDark-600 dark:text-brandDark-300 border border-brandDark-200/50 dark:border-brandDark-800/30">
           <Users size={16} className="text-primary-500" />
@@ -125,22 +132,20 @@ export const Sidebar: React.FC<SidebarProps> = ({
       <div className="px-4 py-3 flex gap-2 border-b border-brandDark-100 dark:border-brandDark-800 bg-white dark:bg-brandDark-900">
         <button
           onClick={onViewDashboard}
-          className={`flex-1 flex items-center justify-center gap-1.5 py-2 px-3 text-xs font-semibold rounded-lg border transition-all ${
-            showDashboard
+          className={`flex-1 flex items-center justify-center gap-1.5 py-2 px-3 text-xs font-semibold rounded-lg border transition-all ${showDashboard
               ? 'bg-primary-50 border-primary-300 text-primary-700 dark:bg-primary-950/30 dark:border-primary-800 dark:text-primary-300'
               : 'border-brandDark-200 dark:border-brandDark-800 hover:bg-brandDark-50 dark:hover:bg-brandDark-850 text-brandDark-600 dark:text-brandDark-300'
-          }`}
+            }`}
         >
           <BarChart size={14} />
           Analytics
         </button>
         <button
           onClick={onViewGraph}
-          className={`flex-1 flex items-center justify-center gap-1.5 py-2 px-3 text-xs font-semibold rounded-lg border transition-all ${
-            showGraph
+          className={`flex-1 flex items-center justify-center gap-1.5 py-2 px-3 text-xs font-semibold rounded-lg border transition-all ${showGraph
               ? 'bg-primary-50 border-primary-300 text-primary-700 dark:bg-primary-950/30 dark:border-primary-800 dark:text-primary-300'
               : 'border-brandDark-200 dark:border-brandDark-800 hover:bg-brandDark-50 dark:hover:bg-brandDark-850 text-brandDark-600 dark:text-brandDark-300'
-          }`}
+            }`}
         >
           <Users size={14} />
           Dependencies
@@ -181,13 +186,12 @@ export const Sidebar: React.FC<SidebarProps> = ({
                   key={topic.id}
                   disabled={locked}
                   onClick={() => setTopic(topic.id)}
-                  className={`w-full flex items-start gap-3 p-2.5 rounded-xl text-left transition-all ${
-                    active
+                  className={`w-full flex items-start gap-3 p-2.5 rounded-xl text-left transition-all ${active
                       ? 'bg-primary-500 text-white shadow-md shadow-primary-500/20'
                       : locked
-                      ? 'opacity-50 cursor-not-allowed text-brandDark-400'
-                      : 'hover:bg-brandDark-100 dark:hover:bg-brandDark-850 text-brandDark-700 dark:text-brandDark-300'
-                  }`}
+                        ? 'opacity-50 cursor-not-allowed text-brandDark-400'
+                        : 'hover:bg-brandDark-100 dark:hover:bg-brandDark-850 text-brandDark-700 dark:text-brandDark-300'
+                    }`}
                 >
                   <span className="mt-0.5">
                     {completed ? (
@@ -240,13 +244,12 @@ export const Sidebar: React.FC<SidebarProps> = ({
                               key={topic.id}
                               disabled={locked}
                               onClick={() => setTopic(topic.id)}
-                              className={`w-full flex items-start gap-2.5 p-2 rounded-lg text-left transition-all ${
-                                active
+                              className={`w-full flex items-start gap-2.5 p-2 rounded-lg text-left transition-all ${active
                                   ? 'bg-primary-600 text-white font-medium shadow-sm shadow-primary-500/10'
                                   : locked
-                                  ? 'opacity-40 cursor-not-allowed'
-                                  : 'hover:bg-brandDark-100 dark:hover:bg-brandDark-850 text-brandDark-700 dark:text-brandDark-300'
-                              }`}
+                                    ? 'opacity-40 cursor-not-allowed'
+                                    : 'hover:bg-brandDark-100 dark:hover:bg-brandDark-850 text-brandDark-700 dark:text-brandDark-300'
+                                }`}
                             >
                               <span className="mt-0.5 flex-shrink-0">
                                 {completed ? (

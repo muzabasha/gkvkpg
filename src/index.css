@@ -1,19 +1,25 @@
 @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Inter:wght@300;400;500;600;700&display=swap');
 @import "tailwindcss";
 
+/* ─── Design Tokens ──────────────────────────────────────────────────────────
+   Primary blue palette + neutral slate palette + semantic accent colours.
+   All values are referenced via Tailwind utilities throughout the app.
+   ─────────────────────────────────────────────────────────────────────────── */
 @theme {
-  --color-primary-50: #f5f7ff;
-  --color-primary-100: #ebf0ff;
-  --color-primary-200: #d6e0ff;
-  --color-primary-300: #adc2ff;
-  --color-primary-400: #7599ff;
-  --color-primary-500: #3b66ff;
-  --color-primary-600: #2546e6;
-  --color-primary-700: #1d33b3;
-  --color-primary-800: #1a2b8c;
-  --color-primary-900: #131e59;
-  --color-primary-950: #0b1033;
-  
+  /* Primary brand blue */
+  --color-primary-50: #eef3ff;
+  --color-primary-100: #dce6ff;
+  --color-primary-200: #b9cdff;
+  --color-primary-300: #85a8ff;
+  --color-primary-400: #4d7bff;
+  --color-primary-500: #2a5cff;
+  --color-primary-600: #1a44e8;
+  --color-primary-700: #1535c0;
+  --color-primary-800: #162b96;
+  --color-primary-900: #172876;
+  --color-primary-950: #0e1847;
+
+  /* Neutral slate — light mode surfaces */
   --color-brandDark-50: #f8fafc;
   --color-brandDark-100: #f1f5f9;
   --color-brandDark-200: #e2e8f0;
@@ -24,201 +30,363 @@
   --color-brandDark-700: #334155;
   --color-brandDark-800: #1e293b;
   --color-brandDark-900: #0f172a;
-  --color-brandDark-950: #030712;
-  
+  --color-brandDark-950: #020817;
+
+  /* Semantic accent colours */
   --color-concept: #2563eb;
   --color-warning: #dc2626;
   --color-activity: #d97706;
   --color-project: #059669;
   --color-math: #7c3aed;
   --color-insight: #0891b2;
-  
+
+  /* Typography */
   --font-sans: 'Outfit', 'Inter', 'system-ui', 'sans-serif';
   --font-size-lg-readable: 1.125rem;
   --font-size-xl-readable: 1.25rem;
 }
 
-@utility interactive-card {
-  background-color: white;
-  border-width: 1px;
-  border-color: var(--color-brandDark-200);
-  border-radius: 1rem;
-  box-shadow: var(--shadow-sm);
-  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-.dark .interactive-card {
-  background-color: rgba(15, 23, 42, 0.7);
-  backdrop-filter: blur(16px);
-  border-color: rgba(255, 255, 255, 0.08);
-  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.03);
-}
-
-.interactive-card:hover {
-  box-shadow: var(--shadow-lg);
-  transform: translateY(-2px);
-}
-
-.dark .interactive-card:hover {
-  border-color: rgba(59, 102, 255, 0.25);
-  box-shadow: 0 8px 32px rgba(59, 102, 255, 0.08);
-}
-
-/* Custom modern transitions & interactive scaling */
-button, a {
-  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-button:hover:not(:disabled):not(.cursor-not-allowed), a:hover {
-  transform: translateY(-1px);
-}
-
-button:active:not(:disabled), a:active {
-  transform: translateY(0) scale(0.97);
+/* ─── Base Reset & Body ──────────────────────────────────────────────────────
+   Light mode: warm off-white canvas (#f5f7fa) — easier on the eyes than
+   pure white, reduces glare on projectors.
+   Dark mode: deep navy-black (#060d1f) — richer than pure black, avoids
+   harsh contrast while keeping text crisp.
+   ─────────────────────────────────────────────────────────────────────────── */
+html {
+  scroll-behavior: smooth;
 }
 
 body {
-  color: var(--color-brandDark-900);
-  background-color: var(--color-brandDark-50);
   font-family: var(--font-sans);
-  transition-property: color, background-color;
-  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
-  transition-duration: 200ms;
-  font-size: 18px; /* NEP 2020 and Projector standard: minimum 18px */
-  line-height: 1.7;
+  font-size: 17px;
+  line-height: 1.75;
+  color: #1e293b;
+  /* slate-800 — readable, not harsh black */
+  background-color: #f0f4f8;
+  /* cool off-white — reduces eye strain */
+  transition: color 200ms ease, background-color 200ms ease;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 .dark body {
-  color: #f8fafc;
-  background-color: #030712; /* Pure obsidian-black for deep contrast */
+  color: #e2e8f0;
+  /* slate-200 — warm white, not glaring */
+  background-color: #060d1f;
+  /* deep navy-black */
 }
 
+/* ─── Typography ─────────────────────────────────────────────────────────── */
 h1 {
   font-weight: 800;
-  font-size: 1.875rem; /* text-3xl */
-  color: var(--color-primary-900);
-  letter-spacing: -0.025em;
-  line-height: 1.25;
+  font-size: clamp(1.75rem, 4vw, 2.5rem);
+  color: #0f172a;
+  letter-spacing: -0.03em;
+  line-height: 1.2;
 }
 
 .dark h1 {
-  color: #ffffff !important;
-}
-
-@media (min-width: 768px) {
-  h1 {
-    font-size: 2.25rem; /* text-4xl */
-  }
+  color: #f8fafc;
 }
 
 h2 {
-  font-weight: 800;
-  font-size: 1.5rem; /* text-2xl */
-  color: var(--color-brandDark-800);
-  letter-spacing: -0.025em;
-  line-height: 1.375;
-  margin-top: 1.5rem;
-  margin-bottom: 1rem;
+  font-weight: 700;
+  font-size: clamp(1.35rem, 3vw, 1.875rem);
+  color: #1e293b;
+  letter-spacing: -0.02em;
+  line-height: 1.3;
+  margin-top: 1.75rem;
+  margin-bottom: 0.75rem;
 }
 
 .dark h2 {
-  color: #ffffff !important;
-}
-
-@media (min-width: 768px) {
-  h2 {
-    font-size: 1.875rem; /* text-3xl */
-  }
+  color: #f1f5f9;
 }
 
 h3 {
   font-weight: 600;
-  font-size: 1.25rem; /* text-xl */
-  color: var(--color-brandDark-700);
+  font-size: clamp(1.1rem, 2.5vw, 1.375rem);
+  color: #334155;
+  line-height: 1.4;
   margin-top: 1.5rem;
   margin-bottom: 0.5rem;
 }
 
 .dark h3 {
-  color: #ffffff !important;
+  color: #e2e8f0;
 }
 
-@media (min-width: 768px) {
-  h3 {
-    font-size: 1.5rem; /* text-2xl */
-  }
+h4 {
+  font-weight: 700;
+  font-size: 1rem;
+  color: #334155;
+  letter-spacing: 0.01em;
+}
+
+.dark h4 {
+  color: #cbd5e1;
 }
 
 p {
-  margin-bottom: 1rem;
-  color: var(--color-brandDark-600);
+  margin-bottom: 0.875rem;
+  color: #334155;
+  /* slate-700 — comfortable reading grey */
 }
 
 .dark p {
-  color: #cbd5e1; /* slate-300 standard for high contrast */
+  color: #cbd5e1;
 }
 
-/* Custom scrollbar optimized for visual clutter reduction */
-::-webkit-scrollbar {
-  width: 6px;
-  height: 6px;
+/* slate-300 */
+
+strong {
+  color: #1e293b;
 }
 
-::-webkit-scrollbar-track {
-  background-color: transparent;
+.dark strong {
+  color: #f1f5f9;
 }
 
-.dark ::-webkit-scrollbar-track {
-  background-color: transparent;
+/* ─── Learning Component Surfaces ───────────────────────────────────────────
+   Section cards, equation boxes, term tables — all get a distinct layered
+   background so the visual hierarchy is immediately clear.
+   ─────────────────────────────────────────────────────────────────────────── */
+
+/* Page canvas — the outermost scrollable area */
+main {
+  background-color: #edf2f7 !important;
+  /* slightly blue-tinted off-white */
 }
 
-::-webkit-scrollbar-thumb {
-  background-color: rgba(148, 163, 184, 0.3);
-  border-radius: 9999px;
+.dark main {
+  background-color: #060d1f !important;
 }
 
-.dark ::-webkit-scrollbar-thumb {
-  background-color: rgba(255, 255, 255, 0.1);
-  border-radius: 9999px;
+/* Top-level section cards (the collapsible sections in each topic) */
+section.bg-white {
+  background-color: #ffffff !important;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06), 0 4px 16px rgba(0, 0, 0, 0.04);
 }
 
-::-webkit-scrollbar-thumb:hover {
-  background-color: rgba(148, 163, 184, 0.5);
+.dark section.bg-white,
+.dark section.dark\:bg-brandDark-900 {
+  background-color: #0d1b35 !important;
+  /* deep navy card */
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.4), 0 4px 20px rgba(0, 0, 0, 0.3);
 }
 
-.dark ::-webkit-scrollbar-thumb:hover {
-  background-color: rgba(255, 255, 255, 0.2);
+/* Section header strip (the collapsible button row) */
+.dark .dark\:bg-brandDark-950\/20 {
+  background-color: rgba(2, 8, 23, 0.5) !important;
 }
 
-/* KaTeX custom style overrides to fit within large cards */
+/* Inner content boxes — breakdown tables, callout boxes */
+.dark .dark\:bg-brandDark-950 {
+  background-color: #060d1f !important;
+}
+
+/* Sidebar */
+aside.dark\:bg-brandDark-900 {
+  background-color: #ffffff;
+}
+
+.dark aside {
+  background-color: #0a1628 !important;
+  border-color: rgba(255, 255, 255, 0.06) !important;
+}
+
+/* Header bar */
+header,
+.dark header {
+  backdrop-filter: blur(12px);
+}
+
+.dark header {
+  background-color: rgba(6, 13, 31, 0.92) !important;
+  border-color: rgba(255, 255, 255, 0.06) !important;
+}
+
+/* ─── Equation Display Boxes (KaTeX) ─────────────────────────────────────── */
 .katex {
-  font-size: 1.15em !important;
+  font-size: 1.12em !important;
 }
 
 .katex-display {
-  padding-top: 1rem;
-  padding-bottom: 1rem;
-  padding-left: 1.5rem;
-  padding-right: 1.5rem;
-  margin-top: 1rem;
-  margin-bottom: 1rem;
-  background-color: rgba(241, 245, 249, 0.5); /* brandDark-100/50 */
-  border-width: 1px;
-  border-color: rgba(226, 232, 240, 0.5); /* brandDark-200/50 */
-  border-radius: 0.75rem;
+  padding: 1rem 1.5rem;
+  margin: 0.75rem 0;
+  background: linear-gradient(135deg, #f0f4ff 0%, #f8faff 100%);
+  border: 1px solid #c7d7ff;
+  border-left: 4px solid #2a5cff;
+  border-radius: 0.625rem;
   overflow-x: auto;
 }
 
 .dark .katex-display {
-  background-color: rgba(15, 23, 42, 0.5); /* brandDark-900/50 */
-  border-color: rgba(30, 41, 59, 0.5); /* brandDark-800/50 */
+  background: linear-gradient(135deg, #0d1b35 0%, #0f2040 100%);
+  border-color: rgba(42, 92, 255, 0.25);
+  border-left-color: #4d7bff;
 }
 
+/* Equation number badge — the (n.m) label next to each equation */
+.eq-number {
+  font-family: 'Outfit', monospace;
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: #64748b;
+  background: #f1f5f9;
+  border: 1px solid #e2e8f0;
+  border-radius: 0.375rem;
+  padding: 0.1rem 0.45rem;
+  white-space: nowrap;
+  user-select: none;
+}
+
+.dark .eq-number {
+  color: #94a3b8;
+  background: #0f172a;
+  border-color: #1e293b;
+}
+
+/* ─── Term Breakdown Tables ──────────────────────────────────────────────── */
+table {
+  border-collapse: collapse;
+  width: 100%;
+}
+
+thead tr {
+  background-color: #f1f5f9;
+}
+
+.dark thead tr {
+  background-color: #0f172a;
+}
+
+thead th {
+  color: #475569;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  padding: 0.625rem 1rem;
+}
+
+.dark thead th {
+  color: #94a3b8;
+}
+
+tbody td {
+  padding: 0.625rem 1rem;
+  color: #334155;
+  font-size: 0.875rem;
+  vertical-align: top;
+}
+
+.dark tbody td {
+  color: #cbd5e1;
+}
+
+tbody tr:hover {
+  background-color: #f8fafc;
+}
+
+.dark tbody tr:hover {
+  background-color: rgba(255, 255, 255, 0.03);
+}
+
+/* ─── Callout / Alert Boxes ──────────────────────────────────────────────── */
+/* Amber warning */
+.bg-amber-50 {
+  background-color: #fffbeb !important;
+}
+
+.dark .dark\:bg-amber-950\/20 {
+  background-color: rgba(120, 53, 15, 0.15) !important;
+}
+
+/* Emerald success */
+.bg-emerald-50 {
+  background-color: #ecfdf5 !important;
+}
+
+.dark .dark\:bg-emerald-950\/20 {
+  background-color: rgba(6, 78, 59, 0.15) !important;
+}
+
+/* ─── Interactive Cards ──────────────────────────────────────────────────── */
+@utility interactive-card {
+  background-color: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 1rem;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06), 0 4px 12px rgba(0, 0, 0, 0.04);
+  transition: all 0.28s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.dark .interactive-card {
+  background-color: #0d1b35;
+  border-color: rgba(255, 255, 255, 0.07);
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.35);
+}
+
+.interactive-card:hover {
+  box-shadow: 0 8px 32px rgba(42, 92, 255, 0.12);
+  transform: translateY(-2px);
+}
+
+.dark .interactive-card:hover {
+  border-color: rgba(42, 92, 255, 0.3);
+  box-shadow: 0 8px 32px rgba(42, 92, 255, 0.1);
+}
+
+/* ─── Buttons & Links ────────────────────────────────────────────────────── */
+button,
+a {
+  transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+button:hover:not(:disabled):not(.cursor-not-allowed),
+a:hover {
+  transform: translateY(-1px);
+}
+
+button:active:not(:disabled),
+a:active {
+  transform: translateY(0) scale(0.97);
+}
+
+/* ─── Scrollbar ──────────────────────────────────────────────────────────── */
+::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(100, 116, 139, 0.25);
+  border-radius: 9999px;
+}
+
+.dark ::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.08);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(100, 116, 139, 0.45);
+}
+
+.dark ::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.16);
+}
+
+/* ─── Animations ─────────────────────────────────────────────────────────── */
 @keyframes fadeIn {
   from {
     opacity: 0;
-    transform: translateY(6px);
+    transform: translateY(8px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);
@@ -226,7 +394,23 @@ p {
 }
 
 .animate-fadeIn {
-  animation: fadeIn 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  animation: fadeIn 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
+/* ─── Focus Rings (Accessibility) ───────────────────────────────────────── */
+:focus-visible {
+  outline: 2px solid #2a5cff;
+  outline-offset: 2px;
+  border-radius: 4px;
+}
 
+/* ─── Selection ──────────────────────────────────────────────────────────── */
+::selection {
+  background-color: rgba(42, 92, 255, 0.18);
+  color: #0f172a;
+}
+
+.dark ::selection {
+  background-color: rgba(77, 123, 255, 0.3);
+  color: #f8fafc;
+}

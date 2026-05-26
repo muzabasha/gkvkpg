@@ -238,8 +238,8 @@ export const Topic1_RandomVector: React.FC<Topic1Props> = ({ projectorMode }) =>
               {/* A. Random Vector */}
               <div className="space-y-3">
                 <span className="text-xs font-bold uppercase tracking-wider text-primary-500 block">A. The Random Vector</span>
-                <p>A <strong>Random Vector</strong> <MathText math="\\mathbf{X}_{p \\times 1}" /> aggregates <MathText math="p" /> individual random variables into a single algebraic column vector:</p>
-                <Eq n="1.1" math="\\mathbf{X} = \\begin{bmatrix} X_1 \\\\ X_2 \\\\ \\vdots \\\\ X_p \\end{bmatrix}" label="Random Vector" />
+                <p>A <strong>Random Vector</strong> <MathText math="\mathbf{X}_{p \times 1}" /> aggregates <MathText math="p" /> individual random variables into a single algebraic column vector:</p>
+                <Eq n="1.1" math="\mathbf{X} = \begin{bmatrix} X_1 \\ X_2 \\ \vdots \\ X_p \end{bmatrix}" label="Random Vector" />
                 <div className="overflow-x-auto rounded-xl border border-brandDark-200 dark:border-brandDark-800">
                   <table className="w-full"><thead><tr className="bg-brandDark-100 dark:bg-brandDark-800">
                     <th className="text-left px-4 py-2 font-bold text-brandDark-700 dark:text-brandDark-300 w-52 text-sm">Term</th>
@@ -247,7 +247,7 @@ export const Topic1_RandomVector: React.FC<Topic1Props> = ({ projectorMode }) =>
                   </tr></thead><tbody className="divide-y divide-brandDark-100 dark:divide-brandDark-800">
                       <Term sym="X_i" meaning="A distinct univariate random variable representing one measurement scale (e.g., X₁ = Student Height, X₂ = Student Shoe Size)." />
                       <Term sym="p" meaning="The total number of dimensions — the number of variables being measured simultaneously." />
-                      <Term sym="\\mathbf{X}_{p \\times 1}" meaning={<>Column orientation is mandatory so that linear transformations can be computed via matrix multiplication: <MathText math="\\mathbf{Y} = \\mathbf{A}\\mathbf{X}" />.</>} />
+                      <Term sym="\mathbf{X}_{p \times 1}" meaning={<>Column orientation is mandatory so that linear transformations can be computed via matrix multiplication: <MathText math="\mathbf{Y} = \mathbf{A}\mathbf{X}" />.</>} />
                     </tbody></table>
                 </div>
               </div>
@@ -255,16 +255,16 @@ export const Topic1_RandomVector: React.FC<Topic1Props> = ({ projectorMode }) =>
               {/* B. Mean Vector */}
               <div className="space-y-3">
                 <span className="text-xs font-bold uppercase tracking-wider text-primary-500 block">B. The Expectation Vector (Centre of Gravity)</span>
-                <p>The <strong>Mean Vector</strong> <MathText math="\\boldsymbol{\\mu}" /> locates the multi-dimensional centre of mass of the probability density cloud:</p>
-                <Eq n="1.2" math="\\boldsymbol{\\mu} = E[\\mathbf{X}] = \\begin{bmatrix} E[X_1] \\\\ E[X_2] \\\\ \\vdots \\\\ E[X_p] \\end{bmatrix} = \\begin{bmatrix} \\mu_1 \\\\ \\mu_2 \\\\ \\vdots \\\\ \\mu_p \\end{bmatrix}" label="Mean Vector" />
+                <p>The <strong>Mean Vector</strong> <MathText math="\boldsymbol{\mu}" /> locates the multi-dimensional centre of mass of the probability density cloud:</p>
+                <Eq n="1.2" math="\boldsymbol{\mu} = E[\mathbf{X}] = \begin{bmatrix} E[X_1] \\ E[X_2] \\ \vdots \\ E[X_p] \end{bmatrix} = \begin{bmatrix} \mu_1 \\ \mu_2 \\ \vdots \\ \mu_p \end{bmatrix}" label="Mean Vector" />
                 <div className="overflow-x-auto rounded-xl border border-brandDark-200 dark:border-brandDark-800">
                   <table className="w-full"><thead><tr className="bg-brandDark-100 dark:bg-brandDark-800">
                     <th className="text-left px-4 py-2 font-bold text-brandDark-700 dark:text-brandDark-300 w-52 text-sm">Term</th>
                     <th className="text-left px-4 py-2 font-bold text-brandDark-700 dark:text-brandDark-300 text-sm">Meaning</th>
                   </tr></thead><tbody className="divide-y divide-brandDark-100 dark:divide-brandDark-800">
-                      <Term sym="E[\\mathbf{X}]" meaning="The expectation operator applied to the entire random vector — returns a vector of the same dimension p." />
-                      <Term sym="E[X_i] = \\int x\\,f_i(x)\\,dx" meaning="The scalar expected value of the i-th component — the probability-weighted average of all possible values of X_i." />
-                      <Term sym="\\mu_i" meaning="The standalone population average of variable X_i — the i-th entry of the mean vector." />
+                      <Term sym="E[\mathbf{X}]" meaning="The expectation operator applied to the entire random vector — returns a vector of the same dimension p." />
+                      <Term sym="E[X_i] = \int x\,f_i(x)\,dx" meaning="The scalar expected value of the i-th component — the probability-weighted average of all possible values of X_i." />
+                      <Term sym="\mu_i" meaning="The standalone population average of variable X_i — the i-th entry of the mean vector." />
                     </tbody></table>
                 </div>
               </div>
@@ -272,19 +272,19 @@ export const Topic1_RandomVector: React.FC<Topic1Props> = ({ projectorMode }) =>
               {/* C. Covariance Matrix */}
               <div className="space-y-3">
                 <span className="text-xs font-bold uppercase tracking-wider text-primary-500 block">C. The Variance-Covariance Matrix (Dispersion Matrix)</span>
-                <p>The <strong>Covariance Matrix</strong> <MathText math="\\mathbf{\\Sigma}" /> captures both the individual spreads and the mutual linear associations between all variables:</p>
-                <Eq n="1.3" math="\\mathbf{\\Sigma} = E\\!\\left[(\\mathbf{X}-\\boldsymbol{\\mu})(\\mathbf{X}-\\boldsymbol{\\mu})^T\\right] = \\begin{bmatrix} \\sigma_1^2 & \\sigma_{12} & \\cdots & \\sigma_{1p} \\\\ \\sigma_{21} & \\sigma_2^2 & \\cdots & \\sigma_{2p} \\\\ \\vdots & \\vdots & \\ddots & \\vdots \\\\ \\sigma_{p1} & \\sigma_{p2} & \\cdots & \\sigma_p^2 \\end{bmatrix}" label="Variance-Covariance Matrix" />
+                <p>The <strong>Covariance Matrix</strong> <MathText math="\mathbf{\Sigma}" /> captures both the individual spreads and the mutual linear associations between all variables:</p>
+                <Eq n="1.3" math="\mathbf{\Sigma} = E\!\left[(\mathbf{X}-\boldsymbol{\mu})(\mathbf{X}-\boldsymbol{\mu})^T\right] = \begin{bmatrix} \sigma_1^2 & \sigma_{12} & \cdots & \sigma_{1p} \\ \sigma_{21} & \sigma_2^2 & \cdots & \sigma_{2p} \\ \vdots & \vdots & \ddots & \vdots \\ \sigma_{p1} & \sigma_{p2} & \cdots & \sigma_p^2 \end{bmatrix}" label="Variance-Covariance Matrix" />
                 <div className="overflow-x-auto rounded-xl border border-brandDark-200 dark:border-brandDark-800">
                   <table className="w-full"><thead><tr className="bg-brandDark-100 dark:bg-brandDark-800">
                     <th className="text-left px-4 py-2 font-bold text-brandDark-700 dark:text-brandDark-300 w-52 text-sm">Term</th>
                     <th className="text-left px-4 py-2 font-bold text-brandDark-700 dark:text-brandDark-300 text-sm">Meaning</th>
                   </tr></thead><tbody className="divide-y divide-brandDark-100 dark:divide-brandDark-800">
-                      <Term sym="(\\mathbf{X}-\\boldsymbol{\\mu})" meaning="The deviation vector — how far a particular observation falls from the class centre of mass. A p×1 column vector." />
-                      <Term sym="(\\mathbf{X}-\\boldsymbol{\\mu})^T" meaning="The transpose — turns the column deviation vector into a row vector." />
-                      <Term sym="(\\mathbf{X}-\\boldsymbol{\\mu})(\\mathbf{X}-\\boldsymbol{\\mu})^T" meaning="The outer product — yields a symmetric p×p matrix of deviation products (not a scalar dot product)." />
-                      <Term sym="\\sigma_i^2 \\geq 0" meaning="Diagonal entries — the variance of variable X_i. Always non-negative; measures standalone spread." />
-                      <Term sym="\\sigma_{ij} = \\sigma_{ji}" meaning={<>Off-diagonal entries — the covariance between <MathText math="X_i" /> and <MathText math="X_j" />. Positive: they scale together; negative: one rises as the other falls; zero: no linear dependency.</>} />
-                      <Term sym="\\mathbf{\\Sigma} = \\mathbf{\\Sigma}^T" meaning="Symmetry — covariance is commutative, so the matrix equals its own transpose." />
+                      <Term sym="(\mathbf{X}-\boldsymbol{\mu})" meaning="The deviation vector — how far a particular observation falls from the class centre of mass. A p×1 column vector." />
+                      <Term sym="(\mathbf{X}-\boldsymbol{\mu})^T" meaning="The transpose — turns the column deviation vector into a row vector." />
+                      <Term sym="(\mathbf{X}-\boldsymbol{\mu})(\mathbf{X}-\boldsymbol{\mu})^T" meaning="The outer product — yields a symmetric p×p matrix of deviation products (not a scalar dot product)." />
+                      <Term sym="\sigma_i^2 \geq 0" meaning="Diagonal entries — the variance of variable X_i. Always non-negative; measures standalone spread." />
+                      <Term sym="\sigma_{ij} = \sigma_{ji}" meaning={<>Off-diagonal entries — the covariance between <MathText math="X_i" /> and <MathText math="X_j" />. Positive: they scale together; negative: one rises as the other falls; zero: no linear dependency.</>} />
+                      <Term sym="\mathbf{\Sigma} = \mathbf{\Sigma}^T" meaning="Symmetry — covariance is commutative, so the matrix equals its own transpose." />
                     </tbody></table>
                 </div>
               </div>
@@ -293,18 +293,18 @@ export const Topic1_RandomVector: React.FC<Topic1Props> = ({ projectorMode }) =>
               <div className="space-y-3">
                 <span className="text-xs font-bold uppercase tracking-wider text-primary-500 block">D. Bivariate Normal Density Function</span>
                 <p>For two variables (Height <MathText math="X" /> and Shoe Size <MathText math="Y" />), the joint probability density is:</p>
-                <Eq n="1.4" math="f(x,y) = \\frac{1}{2\\pi\\sigma_X\\sigma_Y\\sqrt{1-\\rho^2}} \\exp\\!\\left(-\\frac{1}{2(1-\\rho^2)}\\left[\\frac{(x-\\mu_X)^2}{\\sigma_X^2} - \\frac{2\\rho(x-\\mu_X)(y-\\mu_Y)}{\\sigma_X\\sigma_Y} + \\frac{(y-\\mu_Y)^2}{\\sigma_Y^2}\\right]\\right)" label="Bivariate Normal Density" />
+                <Eq n="1.4" math="f(x,y) = \frac{1}{2\pi\sigma_X\sigma_Y\sqrt{1-\rho^2}} \exp\!\left(-\frac{1}{2(1-\rho^2)}\left[\frac{(x-\mu_X)^2}{\sigma_X^2} - \frac{2\rho(x-\mu_X)(y-\mu_Y)}{\sigma_X\sigma_Y} + \frac{(y-\mu_Y)^2}{\sigma_Y^2}\right]\right)" label="Bivariate Normal Density" />
                 <div className="overflow-x-auto rounded-xl border border-brandDark-200 dark:border-brandDark-800">
                   <table className="w-full"><thead><tr className="bg-brandDark-100 dark:bg-brandDark-800">
                     <th className="text-left px-4 py-2 font-bold text-brandDark-700 dark:text-brandDark-300 w-52 text-sm">Term</th>
                     <th className="text-left px-4 py-2 font-bold text-brandDark-700 dark:text-brandDark-300 text-sm">Meaning</th>
                   </tr></thead><tbody className="divide-y divide-brandDark-100 dark:divide-brandDark-800">
-                      <Term sym="\\rho = \\frac{\\sigma_{XY}}{\\sigma_X\\sigma_Y}" meaning="Correlation coefficient — a scale-free, normalised covariance index bounded strictly within [−1, 1]." />
-                      <Term sym="\\frac{1}{2\\pi\\sigma_X\\sigma_Y\\sqrt{1-\\rho^2}}" meaning="Normalisation constant — guarantees the total volume beneath the density surface integrates to exactly 1." />
-                      <Term sym="\\sigma_X\\sigma_Y\\sqrt{1-\\rho^2}" meaning="Generalised standard deviation — measures the volume of the probability ellipsoid. Larger spread → flatter density peak." />
-                      <Term sym="\\frac{(x-\\mu_X)^2}{\\sigma_X^2}" meaning="Normalised squared deviation along the X axis." />
-                      <Term sym="\\frac{(y-\\mu_Y)^2}{\\sigma_Y^2}" meaning="Normalised squared deviation along the Y axis." />
-                      <Term sym="-\\frac{2\\rho(x-\\mu_X)(y-\\mu_Y)}{\\sigma_X\\sigma_Y}" meaning="Cross-interaction term — when ρ > 0, deviations of the same sign raise the density, tilting the contour ellipse upward." />
+                      <Term sym="\rho = \frac{\sigma_{XY}}{\sigma_X\sigma_Y}" meaning="Correlation coefficient — a scale-free, normalised covariance index bounded strictly within [−1, 1]." />
+                      <Term sym="\frac{1}{2\pi\sigma_X\sigma_Y\sqrt{1-\rho^2}}" meaning="Normalisation constant — guarantees the total volume beneath the density surface integrates to exactly 1." />
+                      <Term sym="\sigma_X\sigma_Y\sqrt{1-\rho^2}" meaning="Generalised standard deviation — measures the volume of the probability ellipsoid. Larger spread → flatter density peak." />
+                      <Term sym="\frac{(x-\mu_X)^2}{\sigma_X^2}" meaning="Normalised squared deviation along the X axis." />
+                      <Term sym="\frac{(y-\mu_Y)^2}{\sigma_Y^2}" meaning="Normalised squared deviation along the Y axis." />
+                      <Term sym="-\frac{2\rho(x-\mu_X)(y-\mu_Y)}{\sigma_X\sigma_Y}" meaning="Cross-interaction term — when ρ > 0, deviations of the same sign raise the density, tilting the contour ellipse upward." />
                     </tbody></table>
                 </div>
               </div>
@@ -312,15 +312,15 @@ export const Topic1_RandomVector: React.FC<Topic1Props> = ({ projectorMode }) =>
               {/* E. Pearson Correlation */}
               <div className="space-y-3">
                 <span className="text-xs font-bold uppercase tracking-wider text-primary-500 block">E. Pearson Correlation Coefficient</span>
-                <Eq n="1.5" math="\\rho_{ij} = \\frac{\\sigma_{ij}}{\\sigma_i\\,\\sigma_j} \\;\\in\\; [-1,\\,1]" label="Pearson Correlation" />
+                <Eq n="1.5" math="\rho_{ij} = \frac{\sigma_{ij}}{\sigma_i\,\sigma_j} \;\in\; [-1,\,1]" label="Pearson Correlation" />
                 <div className="overflow-x-auto rounded-xl border border-brandDark-200 dark:border-brandDark-800">
                   <table className="w-full"><thead><tr className="bg-brandDark-100 dark:bg-brandDark-800">
                     <th className="text-left px-4 py-2 font-bold text-brandDark-700 dark:text-brandDark-300 w-52 text-sm">Term</th>
                     <th className="text-left px-4 py-2 font-bold text-brandDark-700 dark:text-brandDark-300 text-sm">Meaning</th>
                   </tr></thead><tbody className="divide-y divide-brandDark-100 dark:divide-brandDark-800">
-                      <Term sym="\\sigma_{ij}" meaning="The covariance between X_i and X_j — the numerator, measuring joint variability." />
-                      <Term sym="\\sigma_i\\,\\sigma_j" meaning="Product of the individual standard deviations — the denominator, normalising the covariance to a dimensionless scale." />
-                      <Term sym="\\rho_{ij} \\in [-1,1]" meaning="Bounded range: +1 = perfect positive linear relationship; −1 = perfect negative; 0 = no linear association." />
+                      <Term sym="\sigma_{ij}" meaning="The covariance between X_i and X_j — the numerator, measuring joint variability." />
+                      <Term sym="\sigma_i\,\sigma_j" meaning="Product of the individual standard deviations — the denominator, normalising the covariance to a dimensionless scale." />
+                      <Term sym="\rho_{ij} \in [-1,1]" meaning="Bounded range: +1 = perfect positive linear relationship; −1 = perfect negative; 0 = no linear association." />
                     </tbody></table>
                 </div>
               </div>
@@ -328,16 +328,16 @@ export const Topic1_RandomVector: React.FC<Topic1Props> = ({ projectorMode }) =>
               {/* F. Linear Transformation */}
               <div className="space-y-3">
                 <span className="text-xs font-bold uppercase tracking-wider text-primary-500 block">F. Linear Transformation of a Random Vector</span>
-                <p>If <MathText math="\\mathbf{Y} = \\mathbf{A}\\mathbf{X} + \\mathbf{b}" /> where <MathText math="\\mathbf{A}" /> is a <MathText math="q \\times p" /> constant matrix:</p>
-                <Eq n="1.6a" math="E[\\mathbf{Y}] = \\mathbf{A}\\boldsymbol{\\mu} + \\mathbf{b}" label="Mean of linear transform" />
-                <Eq n="1.6b" math="\\text{Cov}(\\mathbf{Y}) = \\mathbf{A}\\,\\mathbf{\\Sigma}\\,\\mathbf{A}^T" label="Covariance of linear transform (sandwich formula)" />
+                <p>If <MathText math="\mathbf{Y} = \mathbf{A}\mathbf{X} + \mathbf{b}" /> where <MathText math="\mathbf{A}" /> is a <MathText math="q \times p" /> constant matrix:</p>
+                <Eq n="1.6a" math="E[\mathbf{Y}] = \mathbf{A}\boldsymbol{\mu} + \mathbf{b}" label="Mean of linear transform" />
+                <Eq n="1.6b" math="\text{Cov}(\mathbf{Y}) = \mathbf{A}\,\mathbf{\Sigma}\,\mathbf{A}^T" label="Covariance of linear transform (sandwich formula)" />
                 <div className="overflow-x-auto rounded-xl border border-brandDark-200 dark:border-brandDark-800">
                   <table className="w-full"><thead><tr className="bg-brandDark-100 dark:bg-brandDark-800">
                     <th className="text-left px-4 py-2 font-bold text-brandDark-700 dark:text-brandDark-300 w-52 text-sm">Term</th>
                     <th className="text-left px-4 py-2 font-bold text-brandDark-700 dark:text-brandDark-300 text-sm">Meaning</th>
                   </tr></thead><tbody className="divide-y divide-brandDark-100 dark:divide-brandDark-800">
-                      <Term sym="\\mathbf{A}\\,\\mathbf{\\Sigma}\\,\\mathbf{A}^T" meaning="The sandwich formula — matrix A rotates and scales the covariance structure. Foundation of PCA (choosing A to diagonalise Σ)." />
-                      <Term sym="\\mathbf{b}" meaning="The constant shift — does not affect the covariance. Shifting data does not change its spread or correlations." />
+                      <Term sym="\mathbf{A}\,\mathbf{\Sigma}\,\mathbf{A}^T" meaning="The sandwich formula — matrix A rotates and scales the covariance structure. Foundation of PCA (choosing A to diagonalise Σ)." />
+                      <Term sym="\mathbf{b}" meaning="The constant shift — does not affect the covariance. Shifting data does not change its spread or correlations." />
                     </tbody></table>
                 </div>
               </div>
@@ -380,9 +380,9 @@ export const Topic1_RandomVector: React.FC<Topic1Props> = ({ projectorMode }) =>
                     <h6 className="font-extrabold text-brandDark-800 dark:text-brandDark-200">How the Contours Map to Equations:</h6>
                     <div className="space-y-2 text-brandDark-600 dark:text-brandDark-400">
                       <div className="flex items-start gap-2"><span className="w-3 h-3 rounded-full bg-blue-500 flex-shrink-0 mt-1" /><div><strong>Blue dot (μ)</strong> — the mean vector (Eq. 1.2). Centre of the ellipse = peak of the density surface.</div></div>
-                      <div className="flex items-start gap-2"><span className="w-3 h-3 rounded-full bg-violet-500 flex-shrink-0 mt-1" /><div><strong>Purple ellipses</strong> — level sets of Eq. 1.4. Tilt angle is determined by <MathText math="\\rho" /> (Eq. 1.5). Zero covariance → axes-aligned circle.</div></div>
-                      <div className="flex items-start gap-2"><span className="w-3 h-3 rounded-full bg-emerald-500 flex-shrink-0 mt-1" /><div><strong>Green arrow (v₁)</strong> — first eigenvector of <MathText math="\\mathbf{\\Sigma}" /> (Eq. 1.3). Direction of maximum variance. Length = <MathText math="\\sqrt{\\lambda_1}" />.</div></div>
-                      <div className="flex items-start gap-2"><span className="w-3 h-3 rounded-full bg-pink-500 flex-shrink-0 mt-1" /><div><strong>Pink arrow (v₂)</strong> — second eigenvector. Orthogonal to v₁. Length = <MathText math="\\sqrt{\\lambda_2}" />.</div></div>
+                      <div className="flex items-start gap-2"><span className="w-3 h-3 rounded-full bg-violet-500 flex-shrink-0 mt-1" /><div><strong>Purple ellipses</strong> — level sets of Eq. 1.4. Tilt angle is determined by <MathText math="\rho" /> (Eq. 1.5). Zero covariance → axes-aligned circle.</div></div>
+                      <div className="flex items-start gap-2"><span className="w-3 h-3 rounded-full bg-emerald-500 flex-shrink-0 mt-1" /><div><strong>Green arrow (v₁)</strong> — first eigenvector of <MathText math="\mathbf{\Sigma}" /> (Eq. 1.3). Direction of maximum variance. Length = <MathText math="\sqrt{\lambda_1}" />.</div></div>
+                      <div className="flex items-start gap-2"><span className="w-3 h-3 rounded-full bg-pink-500 flex-shrink-0 mt-1" /><div><strong>Pink arrow (v₂)</strong> — second eigenvector. Orthogonal to v₁. Length = <MathText math="\sqrt{\lambda_2}" />.</div></div>
                     </div>
                   </div>
                 </div>
@@ -480,15 +480,15 @@ export const Topic1_RandomVector: React.FC<Topic1Props> = ({ projectorMode }) =>
                   {/* Matrix Output display */}
                   <div className="bg-white dark:bg-brandDark-900 p-4 rounded-xl border border-brandDark-200 dark:border-brandDark-800/80 space-y-2">
                     <h5 className="font-bold text-xs text-brandDark-400 dark:text-brandDark-500 uppercase tracking-wider">
-                      Constructed Covariance Matrix <MathText math="\\mathbf{\\Sigma}" />
+                      Constructed Covariance Matrix <MathText math="\mathbf{\Sigma}" />
                     </h5>
                     <div className="flex justify-center py-2">
                       <MathText math={`\\mathbf{\\Sigma} = \\begin{bmatrix} ${varX.toFixed(2)} & ${clampedCovXY.toFixed(2)} \\\\ ${clampedCovXY.toFixed(2)} & ${varY.toFixed(2)} \\end{bmatrix}`} />
                     </div>
                     <div className="text-xs space-y-1 text-brandDark-600 dark:text-brandDark-400 font-medium">
-                      <div>Correlation Coefficient (<MathText math="\\rho" />): <strong className="text-primary-600 dark:text-primary-400">{correlation.toFixed(3)}</strong></div>
-                      <div>Eigenvalue 1 (<MathText math="\\lambda_1" />): <strong className="text-violet-600 dark:text-violet-400">{eigenvalues[0].toFixed(3)}</strong></div>
-                      <div>Eigenvalue 2 (<MathText math="\\lambda_2" />): <strong className="text-violet-600 dark:text-violet-400">{eigenvalues[1].toFixed(3)}</strong></div>
+                      <div>Correlation Coefficient (<MathText math="\rho" />): <strong className="text-primary-600 dark:text-primary-400">{correlation.toFixed(3)}</strong></div>
+                      <div>Eigenvalue 1 (<MathText math="\lambda_1" />): <strong className="text-violet-600 dark:text-violet-400">{eigenvalues[0].toFixed(3)}</strong></div>
+                      <div>Eigenvalue 2 (<MathText math="\lambda_2" />): <strong className="text-violet-600 dark:text-violet-400">{eigenvalues[1].toFixed(3)}</strong></div>
                     </div>
                   </div>
                 </div>
@@ -655,7 +655,7 @@ export const Topic1_RandomVector: React.FC<Topic1Props> = ({ projectorMode }) =>
                 Student C: [64 in, 10]ᵀ
               </div>
               <p className="text-sm">
-                <strong>Self-Evaluation Key:</strong> Mean Vector <MathText math="\\boldsymbol{\\mu} = [62, 8]^T" />, Variances <MathText math="\\sigma^2_X = 4, \\sigma^2_Y = 4" />, Covariance <MathText math="\\sigma_{XY} = 4" />. Correlation <MathText math="\\rho = 1" /> (perfect linear link).
+                <strong>Self-Evaluation Key:</strong> Mean Vector <MathText math="\boldsymbol{\mu} = [62, 8]^T" />, Variances <MathText math="\sigma^2_X = 4, \sigma^2_Y = 4" />, Covariance <MathText math="\sigma_{XY} = 4" />. Correlation <MathText math="\rho = 1" /> (perfect linear link).
               </p>
             </div>
 
@@ -691,7 +691,7 @@ export const Topic1_RandomVector: React.FC<Topic1Props> = ({ projectorMode }) =>
                 Project Title: Multi-sensor Agriculture Yield Prediction Model
               </h4>
               <p>
-                <strong>Scope:</strong> Deploy IoT nodes to collect soil moisture, temperature, and sun exposure as a 3D random vector <MathText math="\\mathbf{X} = [\\text{Moisture}, \\text{Temp}, \\text{UV}]^T" />, compute <MathText math="\\mathbf{\\Sigma}" /> to discover patterns, and model yield expectation.
+                <strong>Scope:</strong> Deploy IoT nodes to collect soil moisture, temperature, and sun exposure as a 3D random vector <MathText math="\mathbf{X} = [\text{Moisture}, \text{Temp}, \text{UV}]^T" />, compute <MathText math="\mathbf{\Sigma}" /> to discover patterns, and model yield expectation.
               </p>
             </div>
 
@@ -823,7 +823,7 @@ export const Topic1_RandomVector: React.FC<Topic1Props> = ({ projectorMode }) =>
                 Q1: Define a Random Vector and its Expectation.
               </h5>
               <p className="text-brandDark-700 dark:text-brandDark-300">
-                <strong>Answer:</strong> A random vector <MathText math="\\mathbf{X} = [X_1, X_2, \\dots, X_p]^T" /> is a vector whose components are random variables. Its expectation <MathText math="E[\\mathbf{X}] = [E[X_1], E[X_2], \\dots, E[X_p]]^T" /> is the vector of expectations of each component.
+                <strong>Answer:</strong> A random vector <MathText math="\mathbf{X} = [X_1, X_2, \dots, X_p]^T" /> is a vector whose components are random variables. Its expectation <MathText math="E[\mathbf{X}] = [E[X_1], E[X_2], \dots, E[X_p]]^T" /> is the vector of expectations of each component.
               </p>
               <div className="mt-2 text-xs bg-amber-500/10 text-amber-700 dark:text-amber-400 p-2.5 rounded-lg font-semibold">
                 <strong>Pitfall:</strong> Students often forget to write the vector transpose, writing it as a row vector. In matrix operations, vectors must be column vectors.
@@ -836,7 +836,7 @@ export const Topic1_RandomVector: React.FC<Topic1Props> = ({ projectorMode }) =>
                 Q2: Why is the Variance-Covariance matrix always symmetric?
               </h5>
               <p className="text-brandDark-700 dark:text-brandDark-300">
-                <strong>Answer:</strong> By definition, the element at row i and column j is <MathText math="\\text{Cov}(X_i, X_j)" />, and the element at row j and column i is <MathText math="\\text{Cov}(X_j, X_i)" />. Since covariance is commutative, <MathText math="\\mathbf{\\Sigma} = \\mathbf{\\Sigma}^T" />.
+                <strong>Answer:</strong> By definition, the element at row i and column j is <MathText math="\text{Cov}(X_i, X_j)" />, and the element at row j and column i is <MathText math="\text{Cov}(X_j, X_i)" />. Since covariance is commutative, <MathText math="\mathbf{\Sigma} = \mathbf{\Sigma}^T" />.
               </p>
               <div className="mt-2 text-xs bg-blue-500/10 text-blue-700 dark:text-blue-400 p-2.5 rounded-lg font-semibold">
                 <strong>Remembrall Tip:</strong> Memorize: "Mirror across the diagonal." What is on the top-right matches the bottom-left.
@@ -849,8 +849,8 @@ export const Topic1_RandomVector: React.FC<Topic1Props> = ({ projectorMode }) =>
                 Q3: Calculate Covariance matrix if X and Y are independent random variables with variances 4 and 9.
               </h5>
               <p className="text-brandDark-700 dark:text-brandDark-300">
-                <strong>Answer:</strong> Since X and Y are independent, their covariance <MathText math="\\text{Cov}(X, Y) = 0" />. The diagonal holds their variances. Hence:
-                <MathText math="\\mathbf{\\Sigma} = \\begin{bmatrix} 4 & 0 \\\\ 0 & 9 \\end{bmatrix}" block />
+                <strong>Answer:</strong> Since X and Y are independent, their covariance <MathText math="\text{Cov}(X, Y) = 0" />. The diagonal holds their variances. Hence:
+                <MathText math="\mathbf{\Sigma} = \begin{bmatrix} 4 & 0 \\ 0 & 9 \end{bmatrix}" block />
               </p>
             </div>
 
@@ -972,17 +972,17 @@ export const Topic1_RandomVector: React.FC<Topic1Props> = ({ projectorMode }) =>
                     <p className="text-xs text-brandDark-600 dark:text-brandDark-400 leading-relaxed mb-4">
                       {labCovMode === 'positive' && (
                         <span>
-                          <strong>Positive Covariance:</strong> As students grow taller, their foot sizes grow proportionately. Points cluster along an upward diagonal, showing <MathText math="\\text{Cov}(X, Y) > 0" />.
+                          <strong>Positive Covariance:</strong> As students grow taller, their foot sizes grow proportionately. Points cluster along an upward diagonal, showing <MathText math="\text{Cov}(X, Y) > 0" />.
                         </span>
                       )}
                       {labCovMode === 'negative' && (
                         <span>
-                          <strong>Negative Covariance:</strong> A hypothetical inverse relationship where taller heights correlate to smaller foot length (<MathText math="\\text{Cov}(X, Y) < 0" />). Points align downwards.
+                          <strong>Negative Covariance:</strong> A hypothetical inverse relationship where taller heights correlate to smaller foot length (<MathText math="\text{Cov}(X, Y) < 0" />). Points align downwards.
                         </span>
                       )}
                       {labCovMode === 'uncorrelated' && (
                         <span>
-                          <strong>Uncorrelated:</strong> Variables have no linear relationship. Taller students are equally likely to have small or large shoes. Scatter forms an orthogonal circle (<MathText math="\\text{Cov}(X, Y) \\approx 0" />).
+                          <strong>Uncorrelated:</strong> Variables have no linear relationship. Taller students are equally likely to have small or large shoes. Scatter forms an orthogonal circle (<MathText math="\text{Cov}(X, Y) \approx 0" />).
                         </span>
                       )}
                     </p>
@@ -1195,7 +1195,7 @@ $vectors:
                       </pre>
                       <p className="text-[11px] leading-relaxed text-brandDark-600 dark:text-brandDark-400 mt-1">
                         <strong>Interpretation:</strong>
-                        <br />• <strong>Eigenvalues:</strong> The first eigenvalue (<MathText math="26.265" />) captures <MathText math="96.2\\%" /> of total variance. This indicates that the bivariate scatter is highly elongated along a single major principal axis.
+                        <br />• <strong>Eigenvalues:</strong> The first eigenvalue (<MathText math="26.265" />) captures <MathText math="96.2\%" /> of total variance. This indicates that the bivariate scatter is highly elongated along a single major principal axis.
                         <br />• <strong>Eigenvectors:</strong> The vector <MathText math="[0.974, 0.226]^T" /> specifies the direction of the major axis, showing it tilts upward, mirroring the positive covariance.
                       </p>
                     </div>
@@ -1203,7 +1203,7 @@ $vectors:
                 </div>
 
                 <div className="bg-primary-500/5 border border-primary-500/20 p-3.5 rounded-xl text-[11px] leading-normal text-brandDark-500 mt-4 text-left">
-                  <strong>Did you know?</strong> Cholesky decomposition simulates joint random variables by factoring <MathText math="\\mathbf{\\Sigma} = \\mathbf{L}\\mathbf{L}^T" />. The matrix multiplication <MathText math="\\mathbf{Z}\\mathbf{L}" /> transforms standard normal coordinates into the correlated space, acting as a geometric skewing operator.
+                  <strong>Did you know?</strong> Cholesky decomposition simulates joint random variables by factoring <MathText math="\mathbf{\Sigma} = \mathbf{L}\mathbf{L}^T" />. The matrix multiplication <MathText math="\mathbf{Z}\mathbf{L}" /> transforms standard normal coordinates into the correlated space, acting as a geometric skewing operator.
                 </div>
               </div>
 
@@ -1222,8 +1222,8 @@ $vectors:
             <h5 className="font-bold text-white mb-0.5">Key Insights & Takeaways</h5>
             <ul className="list-disc pl-5 space-y-1.5 text-brandDark-200">
               <li>Random vectors store multi-dimensional variables as columns.</li>
-              <li>Expectation coordinates capture center of mass <MathText math="\\boldsymbol{\\mu}" />.</li>
-              <li>Symmetric matrix <MathText math="\\mathbf{\\Sigma}" /> encapsulates variances and pairwise covariances.</li>
+              <li>Expectation coordinates capture center of mass <MathText math="\boldsymbol{\mu}" />.</li>
+              <li>Symmetric matrix <MathText math="\mathbf{\Sigma}" /> encapsulates variances and pairwise covariances.</li>
               <li>Eigenvalue decomposition computes axes of maximum variance.</li>
             </ul>
           </div>

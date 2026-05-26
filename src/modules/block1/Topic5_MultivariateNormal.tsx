@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { MathText } from '../../components/MathText';
 import { ChevronDown, ChevronUp, Sparkles, Calculator, BookOpen, HelpCircle } from 'lucide-react';
+import { Lab5_MultivariateNormal } from '../../components/labs/Lab5_MultivariateNormal';
 
 interface Topic5Props { projectorMode?: boolean; }
 
@@ -31,7 +32,7 @@ const Sec: React.FC<{ open: boolean; toggle: () => void; icon: React.ReactNode; 
   );
 
 export const Topic5_MultivariateNormal: React.FC<Topic5Props> = ({ projectorMode = false }) => {
-  const [open, setOpen] = useState({ s1: true, s2: true, s3: true, s4: true });
+  const [open, setOpen] = useState({ s1: true, s2: true, s3: true, s4: true, s5: true });
   const tog = (k: keyof typeof open) => setOpen(p => ({ ...p, [k]: !p[k] }));
   const fb = projectorMode ? 'text-xl leading-relaxed' : 'text-base leading-relaxed';
 
@@ -258,6 +259,13 @@ export const Topic5_MultivariateNormal: React.FC<Topic5Props> = ({ projectorMode
             <strong>Interpretation:</strong> The point <MathText math="(1,1)^T" /> is only <MathText math="\Delta = \sqrt{0.375} \approx 0.61" /> Mahalanobis units from the mean — well inside the <MathText math="\Delta^2 = 1" /> contour. The density value 0.0467 is close to the peak density <MathText math="f(\boldsymbol{\mu}) = \frac{1}{2\pi\sqrt{8}} \approx 0.0563" />.
           </div>
         </div>
+      </Sec>
+
+      {/* §5 — Virtual Interactive Laboratory */}
+      <Sec open={open.s5} toggle={() => tog('s5')}
+        icon={<BookOpen size={22} />} color="bg-emerald-100 dark:bg-emerald-950/50 text-emerald-600 dark:text-emerald-400"
+        title="§5 — Virtual Interactive Laboratory" sub="Explore density contours, Mahalanobis distance, marginals and conditionals interactively">
+        <Lab5_MultivariateNormal />
       </Sec>
 
     </div>

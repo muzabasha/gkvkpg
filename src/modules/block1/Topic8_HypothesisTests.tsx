@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { MathText } from '../../components/MathText';
 import { ChevronDown, ChevronUp, Sparkles, Calculator, BookOpen, HelpCircle } from 'lucide-react';
+import { Lab8_HypothesisTest } from '../../components/labs/Lab8_HypothesisTest';
 
 interface Topic8Props { projectorMode?: boolean; }
 
@@ -31,7 +32,7 @@ const Sec: React.FC<{ open: boolean; toggle: () => void; icon: React.ReactNode; 
     );
 
 export const Topic8_HypothesisTests: React.FC<Topic8Props> = ({ projectorMode = false }) => {
-    const [open, setOpen] = useState({ s1: true, s2: true, s3: true, s4: true });
+    const [open, setOpen] = useState({ s1: true, s2: true, s3: true, s4: true, s5: true });
     const tog = (k: keyof typeof open) => setOpen(p => ({ ...p, [k]: !p[k] }));
     const fb = projectorMode ? 'text-xl leading-relaxed' : 'text-base leading-relaxed';
 
@@ -263,6 +264,13 @@ export const Topic8_HypothesisTests: React.FC<Topic8Props> = ({ projectorMode = 
                         <strong>Conclusion:</strong> The sample mean vector (172, 67) is not significantly different from the hypothesised (170, 65) at <MathText math="\alpha = 0.05" />. The observed difference could easily be due to random sampling variation. The hypothesised mean vector lies inside the 95% confidence ellipsoid (Eq. 8.7).
                     </div>
                 </div>
+            </Sec>
+
+            {/* §5 — Virtual Interactive Laboratory */}
+            <Sec open={open.s5} toggle={() => tog('s5')}
+                icon={<BookOpen size={22} />} color="bg-emerald-100 dark:bg-emerald-950/50 text-emerald-600 dark:text-emerald-400"
+                title="§5 — Virtual Interactive Laboratory" sub="Repeatedly sample and compute T² to observe rejection rates and the F-distribution">
+                <Lab8_HypothesisTest />
             </Sec>
 
         </div>

@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { MathText } from '../../components/MathText';
 import { ChevronDown, ChevronUp, Sparkles, Calculator, BookOpen, HelpCircle } from 'lucide-react';
+import { Lab2_MarginalJoint } from '../../components/labs/Lab2_MarginalJoint';
 
 interface Topic2Props { projectorMode?: boolean; }
 
@@ -51,7 +52,7 @@ const Sec: React.FC<{
 
 /* ─── Main component ───────────────────────────────────────────────────────── */
 export const Topic2_MarginalJoint: React.FC<Topic2Props> = ({ projectorMode = false }) => {
-  const [open, setOpen] = useState({ s1: true, s2: true, s3: true, s4: true });
+  const [open, setOpen] = useState({ s1: true, s2: true, s3: true, s4: true, s5: true });
   const tog = (k: keyof typeof open) => setOpen(p => ({ ...p, [k]: !p[k] }));
   const fb = projectorMode ? 'text-xl leading-relaxed' : 'text-base leading-relaxed';
 
@@ -280,6 +281,14 @@ export const Topic2_MarginalJoint: React.FC<Topic2Props> = ({ projectorMode = fa
             <p className="text-primary-600 dark:text-primary-400 font-bold">For multivariate normal, marginals are obtained simply by reading off the corresponding entries of <MathText math="\boldsymbol{\mu}" /> and <MathText math="\mathbf{\Sigma}" />.</p>
           </div>
         </div>
+      </Sec>
+
+
+      {/* §5 — Virtual Interactive Laboratory */}
+      <Sec id="s5" open={open.s5} toggle={() => tog('s5')}
+        icon={<BookOpen size={22} />} color="bg-emerald-100 dark:bg-emerald-950/50 text-emerald-600 dark:text-emerald-400"
+        title="§5 — Virtual Interactive Laboratory" sub="Animated marginalisation: watch the joint cloud project onto each axis">
+        <Lab2_MarginalJoint />
       </Sec>
 
     </div>

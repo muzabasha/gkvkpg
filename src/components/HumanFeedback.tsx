@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/set-state-in-effect */
 import React, { useState, useEffect } from 'react';
 import type { FeedbackLog } from '../data/progressStore';
 import { MessageSquare, Star, CheckCircle, Send, AlertTriangle } from 'lucide-react';

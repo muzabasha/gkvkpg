@@ -1,30 +1,51 @@
+/* eslint-disable react-hooks/set-state-in-effect */
 import React, { useState, useEffect } from 'react';
 import MathText from '../../components/MathText';
 import { generateBivariateNormalSample, calculateEigenvalues2D } from '../../utils/stats';
 import type { BivariatePoint } from '../../utils/stats';
-import { 
-  ScatterChart, 
-  Scatter, 
-  XAxis, 
-  YAxis, 
-  CartesianGrid, 
-  Tooltip, 
+import {
+  ScatterChart,
+  Scatter,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
   ResponsiveContainer,
   ReferenceLine
 } from 'recharts';
-import { 
-  Play, 
-  Pause, 
-  RotateCcw, 
-  Sparkles, 
-  BookOpen, 
-  ChevronDown, 
+import {
+  Play,
+  Pause,
+  RotateCcw,
+  Sparkles,
+  BookOpen,
+  ChevronDown,
   ChevronUp,
   Sliders,
   Layers,
   HelpCircle,
   Calculator
 } from 'lucide-react';
+
+/* ── Numbered equation block ─────────────────────────────────────────────── */
+const Eq: React.FC<{ n: string; math: string; label?: string }> = ({ n, math, label }) => (
+  <div className="my-5 flex items-start gap-3">
+    <div className="flex-1 overflow-x-auto">
+      <MathText math={math} block />
+    </div>
+    <span className="mt-3 text-xs font-mono font-semibold text-brandDark-400 dark:text-brandDark-500 whitespace-nowrap select-none bg-brandDark-100 dark:bg-brandDark-800 border border-brandDark-200 dark:border-brandDark-700 rounded px-2 py-0.5 flex-shrink-0">
+      ({n}){label ? ` — ${label}` : ''}
+    </span>
+  </div>
+);
+
+/* ── Term-table row ──────────────────────────────────────────────────────── */
+const Term: React.FC<{ sym: string; meaning: React.ReactNode }> = ({ sym, meaning }) => (
+  <tr className="border-b border-brandDark-100 dark:border-brandDark-800 last:border-0">
+    <td className="py-2 pr-4 align-top w-52 text-sm"><MathText math={sym} /></td>
+    <td className="py-2 text-sm text-brandDark-600 dark:text-brandDark-400 align-top leading-relaxed">{meaning}</td>
+  </tr>
+);
 
 interface Topic1Props {
   projectorMode: boolean;
@@ -75,7 +96,7 @@ export const Topic1_RandomVector: React.FC<Topic1Props> = ({ projectorMode }) =>
   const [isSimPlaying, setIsSimPlaying] = useState<boolean>(false);
   const [simSpeed, setSimSpeed] = useState<number>(1000); // interval in ms
   const [labCovMode, setLabCovMode] = useState<'positive' | 'negative' | 'uncorrelated'>('positive');
-  
+
   // Set parameters based on simulation modes
   useEffect(() => {
     if (labCovMode === 'positive') {
@@ -89,7 +110,7 @@ export const Topic1_RandomVector: React.FC<Topic1Props> = ({ projectorMode }) =>
 
   // Live simulation tick: appends new random students coordinates
   useEffect(() => {
-    let intervalId: any = null;
+    let intervalId: ReturnType<typeof setInterval> | null = null;
     if (isSimPlaying) {
       intervalId = setInterval(() => {
         setLabPoints(prev => {
@@ -128,7 +149,7 @@ export const Topic1_RandomVector: React.FC<Topic1Props> = ({ projectorMode }) =>
 
   return (
     <div className="space-y-8 pb-16">
-      
+
       {/* SECTION 1 — STORY TELLING WITH FUNNY ANALOGY */}
       <section className="bg-white dark:bg-brandDark-900 border border-brandDark-200 dark:border-brandDark-800 rounded-2xl overflow-hidden shadow-sm">
         <button
@@ -207,110 +228,143 @@ export const Topic1_RandomVector: React.FC<Topic1Props> = ({ projectorMode }) =>
 
         {openSections.sec2 && (
           <div className="p-6 space-y-6">
-            
-            {/* Theoretical concepts with KaTeX */}
-            <div className={`${fontBody} space-y-6`}>
-              <h4 className="font-extrabold text-brandDark-800 dark:text-brandDark-200">1. Formal Definitions & Mathematical Anatomy</h4>
-              
-              <div>
-                <span className="text-xs font-bold uppercase tracking-wider text-primary-500 block mb-1">A. The Random Vector</span>
+
+            {/* Theoretical concepts with KaTeX — numbered equations */}
+            <div className={`${fontBody} space-y-8`}>
+              <h4 className="font-extrabold text-brandDark-800 dark:text-brandDark-200 text-lg border-b border-brandDark-200 dark:border-brandDark-700 pb-2">
+                §1 — Formal Definitions &amp; Mathematical Anatomy
+              </h4>
+
+              {/* A. Random Vector */}
+              <div className="space-y-3">
+                <span className="text-xs font-bold uppercase tracking-wider text-primary-500 block">A. The Random Vector</span>
                 <p>A <strong>Random Vector</strong> <MathText math="\\mathbf{X}_{p \\times 1}" /> aggregates <MathText math="p" /> individual random variables into a single algebraic column vector:</p>
-                <MathText math="\\mathbf{X} = \\begin{bmatrix} X_1 \\\\ X_2 \\\\ \\vdots \\\\ X_p \\end{bmatrix}" block />
-                <div className="bg-brandDark-50 dark:bg-brandDark-950 p-3 rounded-lg border border-brandDark-200/50 dark:border-brandDark-800/50 text-xs text-brandDark-500 mt-2 space-y-1.5">
-                  <div><strong>Component Terms Interpretation:</strong></div>
-                  <div>• <MathText math="X_i" />: A distinct univariate random variable representing a specific measurement scale (e.g., <MathText math="X_1" /> is Student Height, <MathText math="X_2" /> is Student Shoe Size).</div>
-                  <div>• <MathText math="p" />: The total dimensions of the measurement space (number of features).</div>
-                  <div>• <strong>Column Format:</strong> Column orientation is mathematically mandatory so that linear transformations can be computed via standard matrix multiplication: <MathText math="\\mathbf{Y} = \\mathbf{A}\\mathbf{X}" />.</div>
+                <Eq n="1.1" math="\\mathbf{X} = \\begin{bmatrix} X_1 \\\\ X_2 \\\\ \\vdots \\\\ X_p \\end{bmatrix}" label="Random Vector" />
+                <div className="overflow-x-auto rounded-xl border border-brandDark-200 dark:border-brandDark-800">
+                  <table className="w-full"><thead><tr className="bg-brandDark-100 dark:bg-brandDark-800">
+                    <th className="text-left px-4 py-2 font-bold text-brandDark-700 dark:text-brandDark-300 w-52 text-sm">Term</th>
+                    <th className="text-left px-4 py-2 font-bold text-brandDark-700 dark:text-brandDark-300 text-sm">Meaning</th>
+                  </tr></thead><tbody className="divide-y divide-brandDark-100 dark:divide-brandDark-800">
+                      <Term sym="X_i" meaning="A distinct univariate random variable representing one measurement scale (e.g., X₁ = Student Height, X₂ = Student Shoe Size)." />
+                      <Term sym="p" meaning="The total number of dimensions — the number of variables being measured simultaneously." />
+                      <Term sym="\\mathbf{X}_{p \\times 1}" meaning={<>Column orientation is mandatory so that linear transformations can be computed via matrix multiplication: <MathText math="\\mathbf{Y} = \\mathbf{A}\\mathbf{X}" />.</>} />
+                    </tbody></table>
                 </div>
               </div>
 
-              <div>
-                <span className="text-xs font-bold uppercase tracking-wider text-primary-500 block mb-1">B. The Expectation Vector (Center of Gravity)</span>
-                <p>The <strong>Mean Vector</strong> <MathText math="\\boldsymbol{\\mu}" /> locates the multi-dimensional center of mass of the probability density cloud:</p>
-                <MathText math="\\boldsymbol{\\mu} = E[\\mathbf{X}] = \\begin{bmatrix} E[X_1] \\\\ E[X_2] \\\\ \\vdots \\\\ E[X_p] \\end{bmatrix} = \\begin{bmatrix} \\mu_1 \\\\ \\mu_2 \\\\ \\vdots \\\\ \\mu_p \\end{bmatrix}" block />
-                <div className="bg-brandDark-50 dark:bg-brandDark-950 p-3 rounded-lg border border-brandDark-200/50 dark:border-brandDark-800/50 text-xs text-brandDark-500 mt-2 space-y-1.5">
-                  <div><strong>Component Terms Interpretation:</strong></div>
-                  <div>• <MathText math="E[\\cdot]" />: The expectation operator, integrating the variable against its probability density function: <MathText math="E[X_i] = \\int x \\cdot f_i(x) dx" />.</div>
-                  <div>• <MathText math="\\mu_i" />: The standalone expected value or scalar population average of variable <MathText math="X_i" />.</div>
+              {/* B. Mean Vector */}
+              <div className="space-y-3">
+                <span className="text-xs font-bold uppercase tracking-wider text-primary-500 block">B. The Expectation Vector (Centre of Gravity)</span>
+                <p>The <strong>Mean Vector</strong> <MathText math="\\boldsymbol{\\mu}" /> locates the multi-dimensional centre of mass of the probability density cloud:</p>
+                <Eq n="1.2" math="\\boldsymbol{\\mu} = E[\\mathbf{X}] = \\begin{bmatrix} E[X_1] \\\\ E[X_2] \\\\ \\vdots \\\\ E[X_p] \\end{bmatrix} = \\begin{bmatrix} \\mu_1 \\\\ \\mu_2 \\\\ \\vdots \\\\ \\mu_p \\end{bmatrix}" label="Mean Vector" />
+                <div className="overflow-x-auto rounded-xl border border-brandDark-200 dark:border-brandDark-800">
+                  <table className="w-full"><thead><tr className="bg-brandDark-100 dark:bg-brandDark-800">
+                    <th className="text-left px-4 py-2 font-bold text-brandDark-700 dark:text-brandDark-300 w-52 text-sm">Term</th>
+                    <th className="text-left px-4 py-2 font-bold text-brandDark-700 dark:text-brandDark-300 text-sm">Meaning</th>
+                  </tr></thead><tbody className="divide-y divide-brandDark-100 dark:divide-brandDark-800">
+                      <Term sym="E[\\mathbf{X}]" meaning="The expectation operator applied to the entire random vector — returns a vector of the same dimension p." />
+                      <Term sym="E[X_i] = \\int x\\,f_i(x)\\,dx" meaning="The scalar expected value of the i-th component — the probability-weighted average of all possible values of X_i." />
+                      <Term sym="\\mu_i" meaning="The standalone population average of variable X_i — the i-th entry of the mean vector." />
+                    </tbody></table>
                 </div>
               </div>
 
-              <div>
-                <span className="text-xs font-bold uppercase tracking-wider text-primary-500 block mb-1">C. The Variance-Covariance Matrix (Dispersion Matrix)</span>
+              {/* C. Covariance Matrix */}
+              <div className="space-y-3">
+                <span className="text-xs font-bold uppercase tracking-wider text-primary-500 block">C. The Variance-Covariance Matrix (Dispersion Matrix)</span>
                 <p>The <strong>Covariance Matrix</strong> <MathText math="\\mathbf{\\Sigma}" /> captures both the individual spreads and the mutual linear associations between all variables:</p>
-                <MathText math="\\mathbf{\\Sigma} = E\\left[(\\mathbf{X} - \\boldsymbol{\\mu})(\\mathbf{X} - \\boldsymbol{\\mu})^T\\right] = \\begin{bmatrix} \\sigma_1^2 & \\sigma_{12} & \\dots & \\sigma_{1p} \\\\ \\sigma_{21} & \\sigma_2^2 & \\dots & \\sigma_{2p} \\\\ \\vdots & \\vdots & \\ddots & \\vdots \\\\ \\sigma_{p1} & \\sigma_{p2} & \\dots & \\sigma_p^2 \\end{bmatrix}" block />
-                <div className="bg-brandDark-50 dark:bg-brandDark-950 p-3 rounded-lg border border-brandDark-200/50 dark:border-brandDark-800/50 text-xs text-brandDark-500 mt-2 space-y-1.5">
-                  <div><strong>Algebraic Mechanics & Terms Interpretation:</strong></div>
-                  <div>• <MathText math="\\mathbf{X} - \\boldsymbol{\\mu}" />: The deviation vector, calculating how far a particular student observation falls from the class center of mass.</div>
-                  <div>• <MathText math="(\\mathbf{X} - \\boldsymbol{\\mu})^T" />: The transpose operator, turning the column deviation vector into a row vector.</div>
-                  <div>• <MathText math="(\\mathbf{X} - \\boldsymbol{\\mu})(\\mathbf{X} - \\boldsymbol{\\mu})^T" />: The outer product. Unlike a dot product (which returns a scalar), this yields a symmetric <MathText math="p \\times p" /> matrix of deviation products.</div>
-                  <div>• Diagonal terms (<MathText math="\\sigma_{i}^2" />): The standard variance of variable <MathText math="X_i" />, measuring standalone spread. These are strictly non-negative (<MathText math="\\sigma_{i}^2 \\ge 0" />).</div>
-                  <div>• Off-diagonal terms (<MathText math="\\sigma_{ij}" />): The covariance between variables <MathText math="X_i" /> and <MathText math="X_j" />, tracking linear association:
-                    <span className="block mt-1 pl-2 border-l-2 border-primary-500">
-                      - Positive (<MathText math="\\sigma_{ij} > 0" />): They scale together. Height increases <MathText math="\\to" /> Shoe Size increases.
-                      <br />- Negative (<MathText math="\\sigma_{ij} < 0" />): One rises, the other falls.
-                      <br />- Zero (<MathText math="\\sigma_{ij} = 0" />): Standard orthogonality; variables have no linear dependency.
-                    </span>
-                  </div>
-                  <div>• Symmetry (<MathText math="\\sigma_{ij} = \\sigma_{ji}" />): Covariance is commutative (<MathText math="\\text{Cov}(X_i, X_j) = \\text{Cov}(X_j, X_i)" />), making the matrix equal to its transpose: <MathText math="\\mathbf{\\Sigma} = \\mathbf{\\Sigma}^T" />.</div>
+                <Eq n="1.3" math="\\mathbf{\\Sigma} = E\\!\\left[(\\mathbf{X}-\\boldsymbol{\\mu})(\\mathbf{X}-\\boldsymbol{\\mu})^T\\right] = \\begin{bmatrix} \\sigma_1^2 & \\sigma_{12} & \\cdots & \\sigma_{1p} \\\\ \\sigma_{21} & \\sigma_2^2 & \\cdots & \\sigma_{2p} \\\\ \\vdots & \\vdots & \\ddots & \\vdots \\\\ \\sigma_{p1} & \\sigma_{p2} & \\cdots & \\sigma_p^2 \\end{bmatrix}" label="Variance-Covariance Matrix" />
+                <div className="overflow-x-auto rounded-xl border border-brandDark-200 dark:border-brandDark-800">
+                  <table className="w-full"><thead><tr className="bg-brandDark-100 dark:bg-brandDark-800">
+                    <th className="text-left px-4 py-2 font-bold text-brandDark-700 dark:text-brandDark-300 w-52 text-sm">Term</th>
+                    <th className="text-left px-4 py-2 font-bold text-brandDark-700 dark:text-brandDark-300 text-sm">Meaning</th>
+                  </tr></thead><tbody className="divide-y divide-brandDark-100 dark:divide-brandDark-800">
+                      <Term sym="(\\mathbf{X}-\\boldsymbol{\\mu})" meaning="The deviation vector — how far a particular observation falls from the class centre of mass. A p×1 column vector." />
+                      <Term sym="(\\mathbf{X}-\\boldsymbol{\\mu})^T" meaning="The transpose — turns the column deviation vector into a row vector." />
+                      <Term sym="(\\mathbf{X}-\\boldsymbol{\\mu})(\\mathbf{X}-\\boldsymbol{\\mu})^T" meaning="The outer product — yields a symmetric p×p matrix of deviation products (not a scalar dot product)." />
+                      <Term sym="\\sigma_i^2 \\geq 0" meaning="Diagonal entries — the variance of variable X_i. Always non-negative; measures standalone spread." />
+                      <Term sym="\\sigma_{ij} = \\sigma_{ji}" meaning={<>Off-diagonal entries — the covariance between <MathText math="X_i" /> and <MathText math="X_j" />. Positive: they scale together; negative: one rises as the other falls; zero: no linear dependency.</>} />
+                      <Term sym="\\mathbf{\\Sigma} = \\mathbf{\\Sigma}^T" meaning="Symmetry — covariance is commutative, so the matrix equals its own transpose." />
+                    </tbody></table>
                 </div>
               </div>
 
-              <div>
-                <span className="text-xs font-bold uppercase tracking-wider text-primary-500 block mb-1">D. Bivariate Normal Density Function (Analytical Focus)</span>
-                <p>For two variables (Height <MathText math="X" /> and Shoe Size <MathText math="Y" />), the continuous probability distribution is defined by the bivariate normal density formula:</p>
-                <MathText math="f(x, y) = \\frac{1}{2\\pi \\sigma_X \\sigma_Y \\sqrt{1-\\rho^2}} \\exp\\left( -\\frac{1}{2(1-\\rho^2)} \\left[ \\frac{(x-\\mu_X)^2}{\\sigma_X^2} - \\frac{2\\rho(x-\\mu_X)(y-\\mu_Y)}{\\sigma_X \\sigma_Y} + \\frac{(y-\\mu_Y)^2}{\\sigma_Y^2} \\right] \\right)" block />
-                
-                <div className="bg-brandDark-50 dark:bg-brandDark-950 p-4 rounded-lg border border-brandDark-200/50 dark:border-brandDark-800/50 text-xs text-brandDark-500 mt-2 space-y-2">
-                  <div className="font-bold text-brandDark-800 dark:text-brandDark-200">Deconstructing Each Density Component:</div>
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div className="space-y-1.5">
-                      <div>• <MathText math="\\rho = \\frac{\\sigma_{XY}}{\\sigma_X \\sigma_Y}" />: <strong>Correlation Coefficient</strong>. A scale-free, normalized covariance index bounded strictly within <MathText math="[-1, 1]" />.</div>
-                      <div>• <MathText math="\\sigma_X \\sigma_Y \\sqrt{1-\\rho^2}" />: Standardized dispersion determinant. Measures the <strong>Generalized Variance</strong> (ellipsoidal surface area of scatter). Large spread flattens the density peak.</div>
-                      <div>• <MathText math="\\frac{1}{2\\pi \\sigma_X \\sigma_Y \\sqrt{1-\\rho^2}}" />: <strong>Normalization Coefficient</strong>. Standard scaling constant that guarantees the total volume beneath the density surface integrates to exactly <MathText math="1.0" />.</div>
-                    </div>
-                    <div className="space-y-1.5">
-                      <div>• <MathText math="\\frac{(x-\\mu_X)^2}{\\sigma_X^2}" />: Normalized square deviation along the Height axis (<MathText math="X" />).</div>
-                      <div>• <MathText math="\\frac{(y-\\mu_Y)^2}{\\sigma_Y^2}" />: Normalized square deviation along the Shoe Size axis (<MathText math="Y" />).</div>
-                      <div>• <MathText math="-\\frac{2\\rho(x-\\mu_X)(y-\\mu_Y)}{\\sigma_X \\sigma_Y}" />: <strong>Cross-Interaction Term</strong>. This term is critical. If <MathText math="\\rho > 0" />, deviations of the same sign (e.g., positive Height deviation and positive Shoe Size deviation) minimize the overall exponent's negative value, raising the probability density. This mathematical interaction tilts the contours, creating an upward-sloping ellipse!</div>
-                    </div>
-                  </div>
+              {/* D. Bivariate Normal Density */}
+              <div className="space-y-3">
+                <span className="text-xs font-bold uppercase tracking-wider text-primary-500 block">D. Bivariate Normal Density Function</span>
+                <p>For two variables (Height <MathText math="X" /> and Shoe Size <MathText math="Y" />), the joint probability density is:</p>
+                <Eq n="1.4" math="f(x,y) = \\frac{1}{2\\pi\\sigma_X\\sigma_Y\\sqrt{1-\\rho^2}} \\exp\\!\\left(-\\frac{1}{2(1-\\rho^2)}\\left[\\frac{(x-\\mu_X)^2}{\\sigma_X^2} - \\frac{2\\rho(x-\\mu_X)(y-\\mu_Y)}{\\sigma_X\\sigma_Y} + \\frac{(y-\\mu_Y)^2}{\\sigma_Y^2}\\right]\\right)" label="Bivariate Normal Density" />
+                <div className="overflow-x-auto rounded-xl border border-brandDark-200 dark:border-brandDark-800">
+                  <table className="w-full"><thead><tr className="bg-brandDark-100 dark:bg-brandDark-800">
+                    <th className="text-left px-4 py-2 font-bold text-brandDark-700 dark:text-brandDark-300 w-52 text-sm">Term</th>
+                    <th className="text-left px-4 py-2 font-bold text-brandDark-700 dark:text-brandDark-300 text-sm">Meaning</th>
+                  </tr></thead><tbody className="divide-y divide-brandDark-100 dark:divide-brandDark-800">
+                      <Term sym="\\rho = \\frac{\\sigma_{XY}}{\\sigma_X\\sigma_Y}" meaning="Correlation coefficient — a scale-free, normalised covariance index bounded strictly within [−1, 1]." />
+                      <Term sym="\\frac{1}{2\\pi\\sigma_X\\sigma_Y\\sqrt{1-\\rho^2}}" meaning="Normalisation constant — guarantees the total volume beneath the density surface integrates to exactly 1." />
+                      <Term sym="\\sigma_X\\sigma_Y\\sqrt{1-\\rho^2}" meaning="Generalised standard deviation — measures the volume of the probability ellipsoid. Larger spread → flatter density peak." />
+                      <Term sym="\\frac{(x-\\mu_X)^2}{\\sigma_X^2}" meaning="Normalised squared deviation along the X axis." />
+                      <Term sym="\\frac{(y-\\mu_Y)^2}{\\sigma_Y^2}" meaning="Normalised squared deviation along the Y axis." />
+                      <Term sym="-\\frac{2\\rho(x-\\mu_X)(y-\\mu_Y)}{\\sigma_X\\sigma_Y}" meaning="Cross-interaction term — when ρ > 0, deviations of the same sign raise the density, tilting the contour ellipse upward." />
+                    </tbody></table>
                 </div>
               </div>
 
-              {/* Graphical Anatomy of Bivariate Ellipse (Illustration) */}
+              {/* E. Pearson Correlation */}
+              <div className="space-y-3">
+                <span className="text-xs font-bold uppercase tracking-wider text-primary-500 block">E. Pearson Correlation Coefficient</span>
+                <Eq n="1.5" math="\\rho_{ij} = \\frac{\\sigma_{ij}}{\\sigma_i\\,\\sigma_j} \\;\\in\\; [-1,\\,1]" label="Pearson Correlation" />
+                <div className="overflow-x-auto rounded-xl border border-brandDark-200 dark:border-brandDark-800">
+                  <table className="w-full"><thead><tr className="bg-brandDark-100 dark:bg-brandDark-800">
+                    <th className="text-left px-4 py-2 font-bold text-brandDark-700 dark:text-brandDark-300 w-52 text-sm">Term</th>
+                    <th className="text-left px-4 py-2 font-bold text-brandDark-700 dark:text-brandDark-300 text-sm">Meaning</th>
+                  </tr></thead><tbody className="divide-y divide-brandDark-100 dark:divide-brandDark-800">
+                      <Term sym="\\sigma_{ij}" meaning="The covariance between X_i and X_j — the numerator, measuring joint variability." />
+                      <Term sym="\\sigma_i\\,\\sigma_j" meaning="Product of the individual standard deviations — the denominator, normalising the covariance to a dimensionless scale." />
+                      <Term sym="\\rho_{ij} \\in [-1,1]" meaning="Bounded range: +1 = perfect positive linear relationship; −1 = perfect negative; 0 = no linear association." />
+                    </tbody></table>
+                </div>
+              </div>
+
+              {/* F. Linear Transformation */}
+              <div className="space-y-3">
+                <span className="text-xs font-bold uppercase tracking-wider text-primary-500 block">F. Linear Transformation of a Random Vector</span>
+                <p>If <MathText math="\\mathbf{Y} = \\mathbf{A}\\mathbf{X} + \\mathbf{b}" /> where <MathText math="\\mathbf{A}" /> is a <MathText math="q \\times p" /> constant matrix:</p>
+                <Eq n="1.6a" math="E[\\mathbf{Y}] = \\mathbf{A}\\boldsymbol{\\mu} + \\mathbf{b}" label="Mean of linear transform" />
+                <Eq n="1.6b" math="\\text{Cov}(\\mathbf{Y}) = \\mathbf{A}\\,\\mathbf{\\Sigma}\\,\\mathbf{A}^T" label="Covariance of linear transform (sandwich formula)" />
+                <div className="overflow-x-auto rounded-xl border border-brandDark-200 dark:border-brandDark-800">
+                  <table className="w-full"><thead><tr className="bg-brandDark-100 dark:bg-brandDark-800">
+                    <th className="text-left px-4 py-2 font-bold text-brandDark-700 dark:text-brandDark-300 w-52 text-sm">Term</th>
+                    <th className="text-left px-4 py-2 font-bold text-brandDark-700 dark:text-brandDark-300 text-sm">Meaning</th>
+                  </tr></thead><tbody className="divide-y divide-brandDark-100 dark:divide-brandDark-800">
+                      <Term sym="\\mathbf{A}\\,\\mathbf{\\Sigma}\\,\\mathbf{A}^T" meaning="The sandwich formula — matrix A rotates and scales the covariance structure. Foundation of PCA (choosing A to diagonalise Σ)." />
+                      <Term sym="\\mathbf{b}" meaning="The constant shift — does not affect the covariance. Shifting data does not change its spread or correlations." />
+                    </tbody></table>
+                </div>
+              </div>
+
+              {/* Illustration */}
               <div className="bg-white dark:bg-brandDark-900 border border-brandDark-200 dark:border-brandDark-800 rounded-2xl p-5 shadow-sm space-y-4">
                 <div className="flex items-center gap-2">
                   <Sparkles size={16} className="text-violet-500 animate-pulse" />
-                  <span className="font-bold text-xs uppercase tracking-wider text-brandDark-750 dark:text-brandDark-250">Visual Illustration: Ellipsoidal Contour Anatomy</span>
+                  <span className="font-bold text-xs uppercase tracking-wider text-brandDark-700 dark:text-brandDark-300">
+                    Visual Illustration — Ellipsoidal Contour Anatomy (Eq. 1.3 &amp; 1.4)
+                  </span>
                 </div>
-                
                 <div className="grid grid-cols-1 md:grid-cols-12 gap-6 items-center">
                   <div className="md:col-span-5 flex justify-center">
                     <svg className="w-64 h-64 border border-brandDark-100 dark:border-brandDark-850 rounded-xl bg-brandDark-50/20" viewBox="0 0 200 200">
-                      {/* Grid Lines */}
-                      <line x1="20" y1="100" x2="180" y2="100" stroke="rgba(148, 163, 184, 0.15)" strokeWidth="1" strokeDasharray="3 3" />
-                      <line x1="100" y1="20" x2="100" y2="180" stroke="rgba(148, 163, 184, 0.15)" strokeWidth="1" strokeDasharray="3 3" />
-                      
-                      {/* Density Contours */}
+                      <line x1="20" y1="100" x2="180" y2="100" stroke="rgba(148,163,184,0.2)" strokeWidth="1" strokeDasharray="3 3" />
+                      <line x1="100" y1="20" x2="100" y2="180" stroke="rgba(148,163,184,0.2)" strokeWidth="1" strokeDasharray="3 3" />
                       <ellipse cx="100" cy="100" rx="60" ry="30" fill="none" stroke="url(#ellipseGrad)" strokeWidth="2" transform="rotate(-30 100 100)" />
                       <ellipse cx="100" cy="100" rx="40" ry="20" fill="none" stroke="rgba(124, 58, 237, 0.4)" strokeWidth="1.5" transform="rotate(-30 100 100)" />
                       <ellipse cx="100" cy="100" rx="20" ry="10" fill="rgba(124, 58, 237, 0.05)" stroke="rgba(124, 58, 237, 0.6)" strokeWidth="1" transform="rotate(-30 100 100)" />
-                      
-                      {/* Center Point (Mean vector) */}
                       <circle cx="100" cy="100" r="4" fill="#3b66ff" />
-                      
-                      {/* Eigenvectors (Principal Axes) */}
-                      {/* Major Axis */}
                       <line x1="100" y1="100" x2="152" y2="70" stroke="#10b981" strokeWidth="2.5" markerEnd="url(#arrow)" />
-                      {/* Minor Axis */}
                       <line x1="100" y1="100" x2="85" y2="74" stroke="#ec4899" strokeWidth="2" markerEnd="url(#arrow)" />
-                      
-                      {/* Labels */}
-                      <text x="105" y="112" fill="#3b66ff" fontSize="9" fontWeight="bold">Center: μ = [μ_X, μ_Y]ᵀ</text>
-                      <text x="145" y="60" fill="#10b981" fontSize="9" fontWeight="bold">v₁ (Major Axis)</text>
-                      <text x="50" y="70" fill="#ec4899" fontSize="9" fontWeight="bold">v₂ (Minor Axis)</text>
-                      
+                      <text x="100" y="114" fill="#3b66ff" fontSize="8" fontWeight="bold" textAnchor="middle">μ = [μ_X, μ_Y]ᵀ  Eq.(1.2)</text>
+                      <text x="148" y="62" fill="#10b981" fontSize="8" fontWeight="bold">v₁ (√λ₁)</text>
+                      <text x="44" y="68" fill="#ec4899" fontSize="8" fontWeight="bold">v₂ (√λ₂)</text>
+                      <text x="100" y="190" fill="#7c3aed" fontSize="7" textAnchor="middle">Eq.(1.3) contours — Eq.(1.4) density</text>
                       <defs>
                         <linearGradient id="ellipseGrad" x1="0%" y1="0%" x2="100%" y2="100%">
                           <stop offset="0%" stopColor="#7c3aed" stopOpacity="0.8" />
@@ -322,15 +376,13 @@ export const Topic1_RandomVector: React.FC<Topic1Props> = ({ projectorMode }) =>
                       </defs>
                     </svg>
                   </div>
-                  
-                  <div className="md:col-span-7 space-y-2 text-xs">
-                    <h6 className="font-extrabold text-brandDark-800 dark:text-brandDark-200">How the Contours Map to Terms:</h6>
-                    <div className="space-y-1.5 text-brandDark-600 dark:text-brandDark-400">
-                      <div>• <strong>Center of Ellipse:</strong> Mapped to the mean vector <MathText math="\\boldsymbol{\\mu} = [\\mu_X, \\mu_Y]^T" />. Locates peak density.</div>
-                      <div>• <strong>Tilt & Correlation (<MathText math="\\rho" />):</strong> Zero covariance (<MathText math="\\rho = 0" />) aligns the ellipse perfectly with the grid axes. Non-zero covariance (<MathText math="\\rho \\neq 0" />) tilts the ellipse.</div>
-                      <div>• <strong>Major Principal Direction (<MathText math="\\mathbf{v}_1" />):</strong> The primary eigenvector. Represents the direction of maximum variability in the student class.</div>
-                      <div>• <strong>Major Axis Length (<MathText math="\\sqrt{\\lambda_1}" />):</strong> Governed by the largest eigenvalue. Measures the variance along the major axis.</div>
-                      <div>• <strong>Minor Axis Length (<MathText math="\\sqrt{\\lambda_2}" />):</strong> Governed by the smaller eigenvalue. Measures the thickness or dispersion orthogonal to the major axis.</div>
+                  <div className="md:col-span-7 space-y-2 text-sm">
+                    <h6 className="font-extrabold text-brandDark-800 dark:text-brandDark-200">How the Contours Map to Equations:</h6>
+                    <div className="space-y-2 text-brandDark-600 dark:text-brandDark-400">
+                      <div className="flex items-start gap-2"><span className="w-3 h-3 rounded-full bg-blue-500 flex-shrink-0 mt-1" /><div><strong>Blue dot (μ)</strong> — the mean vector (Eq. 1.2). Centre of the ellipse = peak of the density surface.</div></div>
+                      <div className="flex items-start gap-2"><span className="w-3 h-3 rounded-full bg-violet-500 flex-shrink-0 mt-1" /><div><strong>Purple ellipses</strong> — level sets of Eq. 1.4. Tilt angle is determined by <MathText math="\\rho" /> (Eq. 1.5). Zero covariance → axes-aligned circle.</div></div>
+                      <div className="flex items-start gap-2"><span className="w-3 h-3 rounded-full bg-emerald-500 flex-shrink-0 mt-1" /><div><strong>Green arrow (v₁)</strong> — first eigenvector of <MathText math="\\mathbf{\\Sigma}" /> (Eq. 1.3). Direction of maximum variance. Length = <MathText math="\\sqrt{\\lambda_1}" />.</div></div>
+                      <div className="flex items-start gap-2"><span className="w-3 h-3 rounded-full bg-pink-500 flex-shrink-0 mt-1" /><div><strong>Pink arrow (v₂)</strong> — second eigenvector. Orthogonal to v₁. Length = <MathText math="\\sqrt{\\lambda_2}" />.</div></div>
                     </div>
                   </div>
                 </div>
@@ -347,21 +399,21 @@ export const Topic1_RandomVector: React.FC<Topic1Props> = ({ projectorMode }) =>
               </div>
 
               <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
-                
+
                 {/* Sliders Input Panel */}
                 <div className="lg:col-span-5 space-y-4">
                   <div className="bg-white dark:bg-brandDark-900 p-4 rounded-xl border border-brandDark-200 dark:border-brandDark-800/80 space-y-3">
                     <h5 className="font-bold text-xs text-brandDark-400 dark:text-brandDark-500 uppercase tracking-wider">
                       Adjust Parameter Sliders
                     </h5>
-                    
+
                     {/* Mean Sliders */}
                     <div>
                       <div className="flex justify-between text-xs font-bold mb-1">
                         <span>Mean Height (μ_X): {muX} in</span>
                       </div>
-                      <input 
-                        type="range" min="30" max="70" step="1" 
+                      <input
+                        type="range" min="30" max="70" step="1"
                         value={muX} onChange={(e) => setMuX(Number(e.target.value))}
                         className="w-full h-1.5 bg-brandDark-200 dark:bg-brandDark-800 rounded-lg appearance-none cursor-pointer accent-primary-500"
                       />
@@ -370,8 +422,8 @@ export const Topic1_RandomVector: React.FC<Topic1Props> = ({ projectorMode }) =>
                       <div className="flex justify-between text-xs font-bold mb-1">
                         <span>Mean Shoe Size (μ_Y): {muY}</span>
                       </div>
-                      <input 
-                        type="range" min="4" max="12" step="0.5" 
+                      <input
+                        type="range" min="4" max="12" step="0.5"
                         value={muY} onChange={(e) => setMuY(Number(e.target.value))}
                         className="w-full h-1.5 bg-brandDark-200 dark:bg-brandDark-800 rounded-lg appearance-none cursor-pointer accent-primary-500"
                       />
@@ -382,8 +434,8 @@ export const Topic1_RandomVector: React.FC<Topic1Props> = ({ projectorMode }) =>
                       <div className="flex justify-between text-xs font-bold mb-1">
                         <span>Variance Height (σ²_X): {varX}</span>
                       </div>
-                      <input 
-                        type="range" min="5" max="50" step="1" 
+                      <input
+                        type="range" min="5" max="50" step="1"
                         value={varX} onChange={(e) => {
                           const v = Number(e.target.value);
                           setVarX(v);
@@ -395,8 +447,8 @@ export const Topic1_RandomVector: React.FC<Topic1Props> = ({ projectorMode }) =>
                       <div className="flex justify-between text-xs font-bold mb-1">
                         <span>Variance Shoe Size (σ²_Y): {varY}</span>
                       </div>
-                      <input 
-                        type="range" min="0.5" max="6" step="0.1" 
+                      <input
+                        type="range" min="0.5" max="6" step="0.1"
                         value={varY} onChange={(e) => {
                           const v = Number(e.target.value);
                           setVarY(v);
@@ -413,12 +465,12 @@ export const Topic1_RandomVector: React.FC<Topic1Props> = ({ projectorMode }) =>
                           (Max: ±{maxPossibleCov.toFixed(2)})
                         </span>
                       </div>
-                      <input 
-                        type="range" 
-                        min={-maxPossibleCov} 
-                        max={maxPossibleCov} 
-                        step="0.05" 
-                        value={clampedCovXY} 
+                      <input
+                        type="range"
+                        min={-maxPossibleCov}
+                        max={maxPossibleCov}
+                        step="0.05"
+                        value={clampedCovXY}
                         onChange={(e) => setCovXY(Number(e.target.value))}
                         className="w-full h-1.5 bg-brandDark-200 dark:bg-brandDark-800 rounded-lg appearance-none cursor-pointer accent-primary-500"
                       />
@@ -451,28 +503,28 @@ export const Topic1_RandomVector: React.FC<Topic1Props> = ({ projectorMode }) =>
                       Bivariate Gaussian Distribution
                     </span>
                   </div>
-                  
+
                   <div className="flex-1 min-h-0 text-xs">
                     <ResponsiveContainer width="100%" height="100%">
                       <ScatterChart margin={{ top: 20, right: 20, bottom: 20, left: 0 }}>
                         <CartesianGrid strokeDasharray="3 3" stroke="rgba(226, 232, 240, 0.08)" />
-                        <XAxis 
-                          type="number" 
-                          dataKey="x" 
-                          name="Height" 
-                          unit="in" 
-                          domain={[20, 80]} 
+                        <XAxis
+                          type="number"
+                          dataKey="x"
+                          name="Height"
+                          unit="in"
+                          domain={[20, 80]}
                           stroke="#64748b"
                         />
-                        <YAxis 
-                          type="number" 
-                          dataKey="y" 
-                          name="Shoe Size" 
-                          domain={[2, 14]} 
+                        <YAxis
+                          type="number"
+                          dataKey="y"
+                          name="Shoe Size"
+                          domain={[2, 14]}
                           stroke="#64748b"
                         />
-                        <Tooltip 
-                          cursor={{ strokeDasharray: '3 3' }} 
+                        <Tooltip
+                          cursor={{ strokeDasharray: '3 3' }}
                           contentStyle={{
                             backgroundColor: '#1e293b',
                             borderColor: '#475569',
@@ -487,7 +539,7 @@ export const Topic1_RandomVector: React.FC<Topic1Props> = ({ projectorMode }) =>
                       </ScatterChart>
                     </ResponsiveContainer>
                   </div>
-                  
+
                   <div className="text-[10px] text-brandDark-400 mt-2 text-center italic font-semibold">
                     Scatter deforms along the main eigenvector axis based on covariance.
                   </div>
@@ -495,7 +547,7 @@ export const Topic1_RandomVector: React.FC<Topic1Props> = ({ projectorMode }) =>
 
               </div>
             </div>
-            
+
           </div>
         )}
       </section>
@@ -522,7 +574,7 @@ export const Topic1_RandomVector: React.FC<Topic1Props> = ({ projectorMode }) =>
 
         {openSections.sec3 && (
           <div className="p-6 space-y-6">
-            
+
             {/* Level 1 */}
             <div className="p-5 rounded-xl border border-brandDark-100 dark:border-brandDark-800/80 bg-brandDark-50/50 dark:bg-brandDark-950/10">
               <div className="flex items-center gap-2 mb-2">
@@ -633,7 +685,7 @@ export const Topic1_RandomVector: React.FC<Topic1Props> = ({ projectorMode }) =>
 
         {openSections.sec4 && (
           <div className="p-6 space-y-6 text-sm">
-            
+
             <div>
               <h4 className="font-extrabold text-brandDark-800 dark:text-brandDark-200 text-base mb-1">
                 Project Title: Multi-sensor Agriculture Yield Prediction Model
@@ -764,7 +816,7 @@ export const Topic1_RandomVector: React.FC<Topic1Props> = ({ projectorMode }) =>
 
         {openSections.sec5 && (
           <div className="p-6 space-y-6 text-sm">
-            
+
             {/* Question 1 */}
             <div className="pb-4 border-b border-brandDark-100 dark:border-brandDark-800 last:border-0 last:pb-0">
               <h5 className="font-black text-brandDark-900 dark:text-white mb-1">
@@ -828,7 +880,7 @@ export const Topic1_RandomVector: React.FC<Topic1Props> = ({ projectorMode }) =>
 
         {openSections.sec6 && (
           <div className="p-6 space-y-6">
-            
+
             <div className={`${fontBody}`}>
               <p>
                 Welcome to the <strong>Virtual Covariance Simulator</strong>. Adjust the preset distribution mode below to feed synthetic student profiles (Height vs Shoe Size) into the graph. Click <strong>Play</strong> to see new student measurements stream in live, shifting the empirical expectations.
@@ -837,33 +889,30 @@ export const Topic1_RandomVector: React.FC<Topic1Props> = ({ projectorMode }) =>
 
             {/* Sim Interface */}
             <div className="border border-brandDark-200 dark:border-brandDark-800 rounded-xl p-5 bg-brandDark-50/50 dark:bg-brandDark-950/20">
-              
+
               {/* Presets and Controls */}
               <div className="flex flex-wrap gap-4 items-center justify-between mb-4 border-b border-brandDark-200 dark:border-brandDark-800 pb-4">
-                
+
                 {/* Presets */}
                 <div className="flex gap-2">
                   <button
                     onClick={() => setLabCovMode('positive')}
-                    className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all ${
-                      disabledStyle(labCovMode === 'positive')
-                    }`}
+                    className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all ${disabledStyle(labCovMode === 'positive')
+                      }`}
                   >
                     Positive Covariance Mode
                   </button>
                   <button
                     onClick={() => setLabCovMode('negative')}
-                    className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all ${
-                      disabledStyle(labCovMode === 'negative')
-                    }`}
+                    className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all ${disabledStyle(labCovMode === 'negative')
+                      }`}
                   >
                     Negative Covariance Mode
                   </button>
                   <button
                     onClick={() => setLabCovMode('uncorrelated')}
-                    className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all ${
-                      disabledStyle(labCovMode === 'uncorrelated')
-                    }`}
+                    className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all ${disabledStyle(labCovMode === 'uncorrelated')
+                      }`}
                   >
                     Uncorrelated Mode
                   </button>
@@ -873,9 +922,8 @@ export const Topic1_RandomVector: React.FC<Topic1Props> = ({ projectorMode }) =>
                 <div className="flex gap-2 items-center">
                   <button
                     onClick={() => setIsSimPlaying(!isSimPlaying)}
-                    className={`p-2 rounded-lg flex items-center gap-1.5 text-xs font-bold text-white transition-all ${
-                      isSimPlaying ? 'bg-amber-600' : 'bg-emerald-600'
-                    }`}
+                    className={`p-2 rounded-lg flex items-center gap-1.5 text-xs font-bold text-white transition-all ${isSimPlaying ? 'bg-amber-600' : 'bg-emerald-600'
+                      }`}
                   >
                     {isSimPlaying ? <Pause size={14} /> : <Play size={14} />}
                     {isSimPlaying ? 'Pause Feed' : 'Start Feed'}
@@ -892,7 +940,7 @@ export const Topic1_RandomVector: React.FC<Topic1Props> = ({ projectorMode }) =>
               </div>
 
               <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
-                
+
                 {/* Interactive Simulator Graph */}
                 <div className="lg:col-span-8 bg-white dark:bg-brandDark-900 p-4 rounded-xl border border-brandDark-200 dark:border-brandDark-800/80 h-96 text-xs">
                   <div className="flex justify-between items-center mb-2 text-brandDark-500 font-semibold">
@@ -998,7 +1046,7 @@ export const Topic1_RandomVector: React.FC<Topic1Props> = ({ projectorMode }) =>
             </div>
 
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
-              
+
               {/* R Script Code Card */}
               <div className="lg:col-span-7 bg-brandDark-950 border border-brandDark-800 rounded-2xl p-5 shadow-lg flex flex-col justify-between">
                 <div>
@@ -1055,19 +1103,18 @@ print(decomp$vectors)
                         setCopied(true);
                         setTimeout(() => setCopied(false), 2000);
                       }}
-                      className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all flex items-center gap-1.5 ${
-                        copied 
-                          ? 'bg-emerald-600 text-white' 
-                          : 'bg-brandDark-850 hover:bg-brandDark-800 text-brandDark-300 border border-brandDark-700'
-                      }`}
+                      className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all flex items-center gap-1.5 ${copied
+                        ? 'bg-emerald-600 text-white'
+                        : 'bg-brandDark-850 hover:bg-brandDark-800 text-brandDark-300 border border-brandDark-700'
+                        }`}
                     >
                       <Sparkles size={12} />
                       {copied ? 'Copied!' : 'Copy R Code'}
                     </button>
                   </div>
-                  
+
                   <pre className="text-xs font-mono text-brandDark-300 bg-brandDark-950/50 p-4 rounded-xl overflow-x-auto border border-brandDark-850/80 leading-relaxed text-left">
-{`# Bivariate Normal Random Vector Simulation
+                    {`# Bivariate Normal Random Vector Simulation
 # Compatible with R 4.3.3 (Windows x86_64-w64-mingw32)
 # No external package installations required (uses base R)
 
@@ -1121,13 +1168,13 @@ print(decomp$vectors)`}
                     <Layers size={16} className="text-primary-500" />
                     Console Outputs & Interpretations
                   </h5>
-                  
+
                   <div className="space-y-4 text-xs">
                     {/* Input Interpretation */}
                     <div className="p-3 bg-brandDark-50 dark:bg-brandDark-950/40 border border-brandDark-200/50 dark:border-brandDark-850/80 rounded-xl space-y-1.5 text-left">
                       <strong className="text-brandDark-700 dark:text-brandDark-300">1. Sample Inputs (Sigma Matrix):</strong>
                       <pre className="font-mono text-[10px] text-brandDark-450 mt-1">
-{`     [,1] [,2]
+                        {`     [,1] [,2]
 [1,] 25.0  5.5
 [2,]  5.5  2.25`}
                       </pre>
@@ -1140,14 +1187,14 @@ print(decomp$vectors)`}
                     <div className="p-3 bg-brandDark-50 dark:bg-brandDark-950/40 border border-brandDark-200/50 dark:border-brandDark-850/80 rounded-xl space-y-1.5 text-left">
                       <strong className="text-brandDark-700 dark:text-brandDark-300">2. Empirical Output Results:</strong>
                       <pre className="font-mono text-[10px] text-brandDark-450 mt-1">
-{`$values: [1] 26.265  1.023
+                        {`$values: [1] 26.265  1.023
 $vectors:
           [,1]     [,2]
 [1,]  0.974052 -0.22632
 [2,]  0.226322  0.97405`}
                       </pre>
                       <p className="text-[11px] leading-relaxed text-brandDark-600 dark:text-brandDark-400 mt-1">
-                        <strong>Interpretation:</strong> 
+                        <strong>Interpretation:</strong>
                         <br />• <strong>Eigenvalues:</strong> The first eigenvalue (<MathText math="26.265" />) captures <MathText math="96.2\\%" /> of total variance. This indicates that the bivariate scatter is highly elongated along a single major principal axis.
                         <br />• <strong>Eigenvectors:</strong> The vector <MathText math="[0.974, 0.226]^T" /> specifies the direction of the major axis, showing it tilts upward, mirroring the positive covariance.
                       </p>
@@ -1197,7 +1244,7 @@ $vectors:
 };
 
 const disabledStyle = (isActive: boolean) => {
-  return isActive 
+  return isActive
     ? 'bg-primary-600 text-white'
     : 'bg-white dark:bg-brandDark-900 border border-brandDark-200 dark:border-brandDark-800 hover:bg-brandDark-100 dark:text-brandDark-300';
 };

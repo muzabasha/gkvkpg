@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { MathText } from '../../components/MathText';
 import { ChevronDown, ChevronUp, Sparkles, Calculator, BookOpen, HelpCircle } from 'lucide-react';
+import { Lab3_Conditional } from '../../components/labs/Lab3_Conditional';
 
 interface Topic3Props { projectorMode?: boolean; }
 
@@ -33,7 +34,7 @@ const Sec: React.FC<{ open: boolean; toggle: () => void; icon: React.ReactNode; 
   );
 
 export const Topic3_ConditionalDistribution: React.FC<Topic3Props> = ({ projectorMode = false }) => {
-  const [open, setOpen] = useState({ s1: true, s2: true, s3: true, s4: true });
+  const [open, setOpen] = useState({ s1: true, s2: true, s3: true, s4: true, s5: true });
   const tog = (k: keyof typeof open) => setOpen(p => ({ ...p, [k]: !p[k] }));
   const fb = projectorMode ? 'text-xl leading-relaxed' : 'text-base leading-relaxed';
 
@@ -248,6 +249,14 @@ export const Topic3_ConditionalDistribution: React.FC<Topic3Props> = ({ projecto
             Knowing the person weighs 80 kg shifts our height estimate up by 5.33 cm and reduces height uncertainty from 10 cm to 6 cm.
           </div>
         </div>
+      </Sec>
+
+
+      {/* §5 — Virtual Interactive Laboratory */}
+      <Sec open={open.s5} toggle={() => tog('s5')}
+        icon={<BookOpen size={22} />} color="bg-emerald-100 dark:bg-emerald-950/50 text-emerald-600 dark:text-emerald-400"
+        title="§5 — Virtual Interactive Laboratory" sub="Animate the conditioning slice and watch the conditional distribution form">
+        <Lab3_Conditional />
       </Sec>
 
     </div>

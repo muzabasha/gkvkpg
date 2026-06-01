@@ -180,11 +180,76 @@ export const Topic4_ClusterAnalysis: React.FC<TopicProps> = ({ projectorMode }) 
         </button>
 
         {openSections.sec3 && (
-          <div className="p-6 space-y-4 text-sm">
-            <div className="p-4 bg-brandDark-50 dark:bg-brandDark-950 rounded-xl">
-              <h5 className="font-bold">Level 1 — Teacher Do: Classroom Tile Walk</h5>
-              <p className="mt-1">
-                The teacher walks diagonally across classroom floor tiles to demonstrate straight-line Euclidean distance. The teacher then walks strictly along the grout lines (forming a grid) to show Manhattan distance, highlighting how metric rules change paths.
+          <div className="p-6 space-y-6">
+            {/* Level 1 */}
+            <div className="p-5 rounded-xl border border-brandDark-100 dark:border-brandDark-800/80 bg-brandDark-50/50 dark:bg-brandDark-950/10">
+              <div className="flex items-center gap-2 mb-2">
+                <span className="px-2 py-0.5 bg-red-100 dark:bg-red-950 text-red-600 rounded text-xs font-bold uppercase">Level 1 — Teacher Do</span>
+                <span className="text-xs text-brandDark-400 font-medium">(Time: 15 mins)</span>
+              </div>
+              <h4 className="font-extrabold text-brandDark-800 dark:text-brandDark-200 text-base mb-2">
+                Demonstration & Core Concepts
+              </h4>
+              <p className="text-sm">
+                <strong>Objectives:</strong> Establish foundational intuition for Cluster Analysis.
+              </p>
+              <div className="text-sm space-y-2 mt-2 pl-3 border-l-2 border-brandDark-200 dark:border-brandDark-700">
+                <p><strong>Step 1:</strong> The teacher introduces the mathematical formulation on the blackboard.</p>
+                <p><strong>Step 2:</strong> Walk through a real-world scenario demonstrating how Cluster Analysis solves the problem.</p>
+              </div>
+            </div>
+
+            {/* Level 2 */}
+            <div className="p-5 rounded-xl border border-brandDark-100 dark:border-brandDark-800/80 bg-brandDark-50/50 dark:bg-brandDark-950/10">
+              <div className="flex items-center gap-2 mb-2">
+                <span className="px-2 py-0.5 bg-amber-100 dark:bg-amber-950 text-amber-600 rounded text-xs font-bold uppercase">Level 2 — Teacher + Student Together</span>
+                <span className="text-xs text-brandDark-400 font-medium">(Time: 15 mins)</span>
+              </div>
+              <h4 className="font-extrabold text-brandDark-800 dark:text-brandDark-200 text-base mb-2">
+                Collaborative Matrix Building
+              </h4>
+              <p className="text-sm">
+                <strong>Objectives:</strong> Guided formulation of Cluster Analysis components.
+              </p>
+              <p className="text-sm">
+                <strong>Instructions:</strong> Teacher drafts the initial matrix/equation. Ask students for inputs to complete the missing parameters, discussing implications at each step.
+              </p>
+            </div>
+
+            {/* Level 3 */}
+            <div className="p-5 rounded-xl border border-brandDark-100 dark:border-brandDark-800/80 bg-brandDark-50/50 dark:bg-brandDark-950/10">
+              <div className="flex items-center gap-2 mb-2">
+                <span className="px-2 py-0.5 bg-emerald-100 dark:bg-emerald-950 text-emerald-600 rounded text-xs font-bold uppercase">Level 3 — All Students Do</span>
+                <span className="text-xs text-brandDark-400 font-medium">(Time: 20 mins)</span>
+              </div>
+              <h4 className="font-extrabold text-brandDark-800 dark:text-brandDark-200 text-base mb-2">
+                Group Matching Challenge (10 groups of 6)
+              </h4>
+              <p className="text-sm">
+                <strong>Objectives:</strong> Relate Cluster Analysis theory to practical outputs.
+              </p>
+              <p className="text-sm">
+                <strong>Instructions:</strong> Group students. Show 4 visual plots and 4 equations/matrices. Groups must match them within 3 minutes and defend their solutions.
+              </p>
+              <p className="text-sm">
+                <strong>Assessment Rubric:</strong> Correct mapping (40%), speed (30%), clarity of logical explanation (30%).
+              </p>
+            </div>
+
+            {/* Level 4 */}
+            <div className="p-5 rounded-xl border border-brandDark-100 dark:border-brandDark-800/80 bg-brandDark-50/50 dark:bg-brandDark-950/10">
+              <div className="flex items-center gap-2 mb-2">
+                <span className="px-2 py-0.5 bg-violet-100 dark:bg-violet-950 text-violet-600 rounded text-xs font-bold uppercase">Level 4 — Individual Student Do</span>
+                <span className="text-xs text-brandDark-400 font-medium">(Time: 10 mins)</span>
+              </div>
+              <h4 className="font-extrabold text-brandDark-800 dark:text-brandDark-200 text-base mb-2">
+                Numerical Computation and Self-Reflection
+              </h4>
+              <p className="text-sm">
+                <strong>Task:</strong> Compute a tiny 2x2 problem related to Cluster Analysis.
+              </p>
+              <p className="text-sm">
+                <strong>Self-Evaluation Key:</strong> Check the final computed scalar/matrix against the expected outcome derived from theoretical formulas.
               </p>
             </div>
           </div>

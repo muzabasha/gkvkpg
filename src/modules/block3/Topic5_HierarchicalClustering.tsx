@@ -53,10 +53,11 @@ export const Topic5_HierarchicalClustering: React.FC<TopicProps> = ({ projectorM
   };
 
   // Compute mock linkage distances between two clusters A and B
-  let distanceVal = 0;
-  if (linkageMode === 'single') distanceVal = 2.5; // minimum path
-  else if (linkageMode === 'complete') distanceVal = 6.8; // maximum path
-  else distanceVal = 4.65; // average path
+  const distanceVal = linkageMode === 'single'
+    ? 2.5 // minimum path
+    : linkageMode === 'complete'
+    ? 6.8 // maximum path
+    : 4.65; // average path
 
   const chartData = [
     { name: 'Single Linkage (Min)', dist: 2.5, fill: '#3b82f6' },

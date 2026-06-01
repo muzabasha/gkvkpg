@@ -58,10 +58,16 @@ export const Topic3_CanonicalCorrelation: React.FC<TopicProps> = ({ projectorMod
     setOpenSections(prev => ({ ...prev, [id]: !prev[id] }));
   };
 
+  // Pure seeded pseudo-random helper to avoid calling impure Math.random during render
+  const getPseudoRandom = (seed: number) => {
+    const x = Math.sin(seed) * 10000;
+    return x - Math.floor(x);
+  };
+
   // Generate canonical scatter points representing correlation between U and V
   const samplePoints = [];
   for (let i = -10; i <= 10; i++) {
-    const noise = (Math.random() - 0.5) * 4 * (1 - crossCov);
+    const noise = (getPseudoRandom(i + 50) - 0.5) * 4 * (1 - crossCov);
     samplePoints.push({
       u: i,
       v: Number((i * crossCov + noise).toFixed(2))

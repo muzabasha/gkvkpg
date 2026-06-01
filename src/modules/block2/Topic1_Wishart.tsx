@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { MathText } from '../../components/MathText';
 import {
   ChevronDown,
@@ -54,20 +54,26 @@ export const Topic1_Wishart: React.FC<TopicProps> = ({ projectorMode }) => {
   // Lab simulator parameters
   const [df, setDf] = useState<number>(10);
   const [sigmaVal, setSigmaVal] = useState<number>(2.5);
-  const [simData, setSimData] = useState<{ trial: number; s11: number; s22: number; s12: number }[]>([]);
+
+  // Pure seeded pseudo-random helper to avoid calling impure Math.random during render
+  const getPseudoRandom = (seed: number) => {
+    const x = Math.sin(seed) * 10000;
+    return x - Math.floor(x);
+  };
 
   // Generate simulated Wishart samples (sums of squares of normal vectors)
-  useEffect(() => {
+  const simData = React.useMemo(() => {
     const trials = 50;
     const temp = [];
+    let seed = 1;
     for (let t = 1; t <= trials; t++) {
       let sumXX = 0;
       let sumYY = 0;
       let sumXY = 0;
       for (let i = 0; i < df; i++) {
         // Generate bivariate normal sample with var = sigmaVal, rho = 0.5
-        const z1 = Math.random() - 0.5 + (Math.random() - 0.5); // quick normal approx
-        const z2 = Math.random() - 0.5 + (Math.random() - 0.5);
+        const z1 = getPseudoRandom(seed++) - 0.5 + (getPseudoRandom(seed++) - 0.5); // quick normal approx
+        const z2 = getPseudoRandom(seed++) - 0.5 + (getPseudoRandom(seed++) - 0.5);
         const x = z1 * Math.sqrt(sigmaVal);
         const y = (0.5 * z1 + Math.sqrt(0.75) * z2) * Math.sqrt(sigmaVal);
         sumXX += x * x;
@@ -81,7 +87,7 @@ export const Topic1_Wishart: React.FC<TopicProps> = ({ projectorMode }) => {
         s12: Number(sumXY.toFixed(2)),
       });
     }
-    setSimData(temp);
+    return temp;
   }, [df, sigmaVal]);
 
   const toggleSection = (id: string) => {

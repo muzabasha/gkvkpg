@@ -42,12 +42,8 @@ export const TopicDependency: React.FC<TopicDependencyProps> = ({
   }, []);
 
   // Check if topic is locked based on prerequisite completion
-  const isTopicLocked = (topicPrereqs: string[]) => {
-    if (!topicPrereqs || topicPrereqs.length === 0) return false;
-    const internalPrereqs = topicPrereqs.filter(prereq => 
-      SYLLABUS.some(b => b.units.some(u => u.topics.some(t => t.id === prereq)))
-    );
-    return internalPrereqs.some(prereqId => !completedTopics.includes(prereqId));
+  const isTopicLocked = () => {
+    return false; // Completely unlock all topics for navigability and auditing
   };
 
   // Generate node coordinates
@@ -87,7 +83,7 @@ export const TopicDependency: React.FC<TopicDependencyProps> = ({
         status = 'active';
       } else if (completedTopics.includes(topic.id)) {
         status = 'completed';
-      } else if (isTopicLocked(topic.prerequisites)) {
+      } else if (isTopicLocked()) {
         status = 'locked';
       }
 

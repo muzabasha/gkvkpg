@@ -45,27 +45,8 @@ export const Sidebar: React.FC<SidebarProps> = ({
   const completionPercentage = Math.round((completedCount / totalTopics) * 100);
 
   // Check if topic is locked based on prerequisites
-  const isTopicLocked = (topic: Topic) => {
-    // Unit 1 (block-1) topics are always unlocked
-    const isUnit1 = SYLLABUS.some(block =>
-      block.id === 'block-1' &&
-      block.units.some(unit => unit.topics.some(t => t.id === topic.id))
-    );
-    if (isUnit1) return false;
-
-    // Lock any topic that belongs to Block 2 or Block 3 (Units 2‑4)
-    const lockedBlock = SYLLABUS.some(block =>
-      (block.id === 'block-2' || block.id === 'block-3') &&
-      block.units.some(unit => unit.topics.some(t => t.id === topic.id))
-    );
-    if (lockedBlock) return true;
-
-    // Existing prerequisite lock logic for other blocks
-    if (!topic.prerequisites || topic.prerequisites.length === 0) return false;
-    const internalPrereqs = topic.prerequisites.filter(prereq =>
-      SYLLABUS.some(b => b.units.some(u => u.topics.some(t => t.id === prereq)))
-    );
-    return internalPrereqs.some(prereqId => !completedTopics.includes(prereqId));
+  const isTopicLocked = () => {
+    return false; // Completely unlock all topics for navigability and auditing
   };
 
   // Flattened topics for searching
@@ -179,7 +160,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
             {filteredTopics.map(({ topic }) => {
               const active = topic.id === currentTopicId && !showDashboard && !showGraph;
               const completed = completedTopics.includes(topic.id);
-              const locked = isTopicLocked(topic);
+              const locked = isTopicLocked();
 
               return (
                 <button
@@ -237,7 +218,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
                         {unit.topics.map(topic => {
                           const active = topic.id === currentTopicId && !showDashboard && !showGraph;
                           const completed = completedTopics.includes(topic.id);
-                          const locked = isTopicLocked(topic);
+                          const locked = isTopicLocked();
 
                           return (
                             <button

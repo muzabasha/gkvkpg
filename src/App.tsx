@@ -13,6 +13,24 @@ import { Topic6_SampleMeanVector } from './modules/block1/Topic6_SampleMeanVecto
 import { Topic7_MLEMeanDispersion } from './modules/block1/Topic7_MLEMeanDispersion';
 import { Topic8_HypothesisTests } from './modules/block1/Topic8_HypothesisTests';
 
+// Block 2 Imports
+import { Topic1_Wishart } from './modules/block2/Topic1_Wishart';
+import { Topic2_HotellingMahalanobis } from './modules/block2/Topic2_HotellingMahalanobis';
+import { Topic3_NullDistribution } from './modules/block2/Topic3_NullDistribution';
+import { Topic4_WilksLambda } from './modules/block2/Topic4_WilksLambda';
+import { Topic5_DiscriminantAnalysis } from './modules/block2/Topic5_DiscriminantAnalysis';
+
+// Block 3 Imports
+import { Topic1_PCA } from './modules/block3/Topic1_PCA';
+import { Topic2_FactorAnalysis } from './modules/block3/Topic2_FactorAnalysis';
+import { Topic3_CanonicalCorrelation } from './modules/block3/Topic3_CanonicalCorrelation';
+import { Topic4_ClusterAnalysis } from './modules/block3/Topic4_ClusterAnalysis';
+import { Topic5_HierarchicalClustering } from './modules/block3/Topic5_HierarchicalClustering';
+import { Topic6_KMeans } from './modules/block3/Topic6_KMeans';
+import { Topic7_PathAnalysis } from './modules/block3/Topic7_PathAnalysis';
+import { Topic8_MDS } from './modules/block3/Topic8_MDS';
+import { Topic9_ScalingMethods } from './modules/block3/Topic9_ScalingMethods';
+
 import { useClassroomProgress } from './data/progressStore';
 import { SYLLABUS, COURSE_OUTCOMES } from './data/syllabus';
 import {
@@ -409,6 +427,38 @@ export const App: React.FC = () => {
                     return <Topic7_MLEMeanDispersion projectorMode={state.projectorMode} />;
                   case 'b1-u1-t8':
                     return <Topic8_HypothesisTests projectorMode={state.projectorMode} />;
+                  
+                  // Block 2 Topics
+                  case 'b2-u2-t1':
+                    return <Topic1_Wishart projectorMode={state.projectorMode} />;
+                  case 'b2-u2-t2':
+                    return <Topic2_HotellingMahalanobis projectorMode={state.projectorMode} />;
+                  case 'b2-u2-t3':
+                    return <Topic3_NullDistribution projectorMode={state.projectorMode} />;
+                  case 'b2-u2-t4':
+                    return <Topic4_WilksLambda projectorMode={state.projectorMode} />;
+                  case 'b2-u2-t5':
+                    return <Topic5_DiscriminantAnalysis projectorMode={state.projectorMode} />;
+                  
+                  // Block 3 Topics
+                  case 'b3-u3-t1':
+                    return <Topic1_PCA projectorMode={state.projectorMode} />;
+                  case 'b3-u3-t2':
+                    return <Topic2_FactorAnalysis projectorMode={state.projectorMode} />;
+                  case 'b3-u3-t3':
+                    return <Topic3_CanonicalCorrelation projectorMode={state.projectorMode} />;
+                  case 'b3-u3-t4':
+                    return <Topic4_ClusterAnalysis projectorMode={state.projectorMode} />;
+                  case 'b3-u3-t5':
+                    return <Topic5_HierarchicalClustering projectorMode={state.projectorMode} />;
+                  case 'b3-u3-t6':
+                    return <Topic6_KMeans projectorMode={state.projectorMode} />;
+                  case 'b3-u4-t1':
+                    return <Topic7_PathAnalysis projectorMode={state.projectorMode} />;
+                  case 'b3-u4-t2':
+                    return <Topic8_MDS projectorMode={state.projectorMode} />;
+                  case 'b3-u4-t3':
+                    return <Topic9_ScalingMethods projectorMode={state.projectorMode} />;
                   default:
                     return (
                       <div className="bg-white dark:bg-brandDark-900 border border-brandDark-200 dark:border-brandDark-800 rounded-3xl p-12 text-center max-w-xl mx-auto my-12 space-y-4">
